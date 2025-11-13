@@ -6,11 +6,11 @@
 #    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/11/06 16:57:53 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/11/13 16:21:12 by lgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minirt
+NAME = miniRT
 
 #compiler and flags
 CC = cc
@@ -30,7 +30,8 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 #sources
 SRC = $(PARSER_DIR)/0-main.c \
-			$(PARSER_DIR)/support_functions.c
+			$(PARSER_DIR)/support_functions.c \
+			$(PARSER_DIR)/1-get_scene.c
 
 #objects
 OBJS = $(SRC:.c=.o)

@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   0-main.c                                           :+:      :+:    :+:   */
+/*   1-get_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/13 16:56:51 by lgertrud         ###   ########.fr       */
+/*   Created: 2025/11/12 16:20:41 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/11/13 16:57:48 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	main(int argc, char **argv)
+char	**ft_get_scene(char *file)
 {
-	char	**scene;
+	int		fd;
 
-	if (argc != 2 || ft_is_rt(argv[1]))
-		ft_exit(ERROR_PARAM, 1);
-	scene = ft_get_scene(argv[1]);
-	return (0);
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		ft_exit(ERROR_FILE, 2);
+	close(fd);
+	return (NULL);
 }
