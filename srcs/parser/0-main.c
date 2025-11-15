@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   0-main.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/15 15:45:51 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:55:30 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "minirt.h"
 
 #include "minirt.h"
 
