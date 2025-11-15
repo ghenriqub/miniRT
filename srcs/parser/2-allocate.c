@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   2-allocate.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/15 15:51:52 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/15 16:05:16 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	ft_put_argument(t_scene *scene, int fd)
 		else if (line[0] != '\n' && line[0] != '#')
 			scene->objects[i++] = ft_strdup(line);
 		free(line);
-		line = get_next_line(fd);
+		line = ft_strtrim(get_next_line(fd), " \t\r\b");
 	}
 }
 

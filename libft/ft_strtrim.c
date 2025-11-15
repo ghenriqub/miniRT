@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:40:08 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/04/14 13:53:43 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/15 16:06:03 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	set_check(char ch, const char *set)
 	return (0);
 }
 
-char	*ft_strtrim(char const *s, char const *set)
+char	*ft_strtrim(char *s, char *set)
 {
 	size_t	start;
 	size_t	end;
@@ -45,5 +45,6 @@ char	*ft_strtrim(char const *s, char const *set)
 	while (start < end)
 		res[i++] = s[start++];
 	res[i] = '\0';
+	free(s);
 	return (res);
 }
