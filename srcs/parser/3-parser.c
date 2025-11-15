@@ -1,21 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   1-get_scene.c                                      :+:      :+:    :+:   */
+/*   3-parser.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/12 16:20:41 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/15 13:19:51 by lgertrud         ###   ########.fr       */
+/*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/11/15 15:40:42 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-t_scene	*ft_get_scene(char *file)
-{
-	t_scene	*scene;
-
-	scene = ft_allocate_scene(file);
-	return (scene);
-}

@@ -6,18 +6,11 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:46:12 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/13 16:57:35 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:42:50 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void	ft_exit(char *message, int code)
-{
-	if (message)
-		ft_putendl_fd(message, 2);
-	exit(code);
-}
 
 ///@brief this function verified if argument is .rt
 int	ft_is_rt(char *file)
@@ -28,4 +21,42 @@ int	ft_is_rt(char *file)
 	if (ft_strncmp(&file[len - 3], ".rt", 3))
 		return (1);
 	return (0);
+}
+
+int	ft_get_fd(char *file)
+{
+	int	fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		ft_exit(ERROR_FILE, 2);
+	return (fd);
+}
+
+void	ft_free_split(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+void	ft_free_scene(t_scene *scene)
+{
+	if (scene->ambient_light)
+		free(scene->ambient_light);
+	if (scene->camera)
+		free(scene->camera);
+	if (scene->light)
+		free(scene->light);
+	if (scene->objects)
+		ft_free_split(scene->objects);
+	free(scene);
 }
