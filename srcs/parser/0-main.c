@@ -3,33 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   0-main.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/15 15:55:30 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/11/17 16:21:10 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	debug_scene(t_scene *scene)
+void	debug_scene(t_args *args)
 {
 	int	i;
 
 	i = 0;
 	printf("\n===== SCENE =====\n");
-	printf("Ambient light: %s\n", scene->ambient_light);
-	printf("Camera:        %s\n", scene->camera);
-	printf("Light:         %s\n", scene->light);
+	printf("Ambient light: %s\n", args->ambient_light);
+	printf("Camera:        %s\n", args->camera);
+	printf("Light:         %s\n", args->light);
 	printf("Objects:\n");
-	if (!scene->objects)
+	if (!args->objects)
 		printf("  (objects == null)\n");
 	else
 	{
 		i = 0;
-		while (scene->objects[i])
+		while (args->objects[i])
 		{
-			printf("  [%d] %s\n", i, scene->objects[i]);
+			printf("  [%d] %s\n", i, args->objects[i]);
 			i++;
 		}
 	}
@@ -38,13 +38,13 @@ void	debug_scene(t_scene *scene)
 
 int	main(int argc, char **argv)
 {
-	t_scene	*scene;
+	t_args	*args;
 
 	if (argc != 2 || ft_is_rt(argv[1]))
 		ft_exit(ERROR_PARAM, 1);
-	scene = ft_get_scene(argv[1]);
-	debug_scene(scene);
-	ft_free_scene(scene);
+	args = ft_get_scene(argv[1]);
+	debug_scene(args);
+	ft_free_scene(args);
 	return (0);
 }
 

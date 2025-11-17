@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:46:12 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/15 15:42:50 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/17 16:20:44 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ void	ft_free_split(char **arr)
 	free(arr);
 }
 
-void	ft_free_scene(t_scene *scene)
+void	ft_free_scene(t_args *args)
 {
-	if (scene->ambient_light)
-		free(scene->ambient_light);
-	if (scene->camera)
-		free(scene->camera);
-	if (scene->light)
-		free(scene->light);
-	if (scene->objects)
-		ft_free_split(scene->objects);
-	free(scene);
+	if (args->ambient_light)
+		free(args->ambient_light);
+	if (args->camera)
+		free(args->camera);
+	if (args->light)
+		free(args->light);
+	if (args->objects)
+		ft_free_split(args->objects);
+	free(args);
 }

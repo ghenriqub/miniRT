@@ -6,16 +6,16 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 16:20:41 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/15 13:19:51 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/17 16:18:04 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_scene	*ft_get_scene(char *file)
+t_args	*ft_get_scene(char *file)
 {
-	t_scene	*scene;
+	t_args	*args;
 
-	scene = ft_allocate_scene(file);
-	return (scene);
+	args = ft_allocate_scene(file);
+	return (args);
 }
