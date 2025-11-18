@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/18 15:38:47 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:04:53 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ typedef struct s_args
 {
 	char	*ambient_light;
 	char	*camera;
-	char	*light;
+	char	**light;
+	int		light_count;
 	char	**objects;
+	int		obj_count;
 }	t_args;
 
 typedef struct s_point

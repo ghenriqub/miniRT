@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/18 15:38:38 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:28:05 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,18 @@ void	debug_scene(t_args *args)
 	printf("\n===== SCENE =====\n");
 	printf("Ambient light: %s\n", args->ambient_light);
 	printf("Camera:        %s\n", args->camera);
-	printf("Light:         %s\n", args->light);
+	printf("lights:\n");
+	if (!args->light)
+		printf("  (light== null)\n");
+	else
+	{
+		i = 0;
+		while (args->light[i])
+		{
+			printf("  [%d] %s\n", i, args->light[i]);
+			i++;
+		}
+	}
 	printf("Objects:\n");
 	if (!args->objects)
 		printf("  (objects == null)\n");

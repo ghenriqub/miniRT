@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/18 15:40:21 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:26:27 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,49 @@
 
 static int	ft_is_object(char *line)
 {
-	if (!line || !*line)
+	int	i;
+
+	i = 0;
+	if (!line)
 		return (0);
-	if (line[0] == '#' || line[0] == '\n' || line[0] == '\0'
-		|| line[0] == 'A' || line[0] == 'C' || line[0] == 'L')
-		return (0);
-	return (1);
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
+	if (!ft_strncmp(&line[i], "sp ", 3))
+		return (1);
+	if (!ft_strncmp(&line[i], "pl ", 3))
+		return (1);
+	if (!ft_strncmp(&line[i], "cy ", 3))
+		return (1);
+	return (0);
 }
 
-static int	ft_obj_count(char *file)
+static int	*ft_count(char *file)
 {
-	char	*line;
+	int		*count;
 	int		fd;
-	int		obj_count;
+	char	*line;
+	int		i;
 
-	obj_count = 0;
+	i = 0;
+	count = ft_calloc(2, sizeof(int));
+	if (!count)
+		ft_exit(ERROR_MALLOC, 2);
 	fd = ft_get_fd(file);
 	line = get_next_line(fd);
-	if (!line || !line[0])
-	{
-		close(fd);
-		exit(0);
-	}
 	while (line)
 	{
-		if (ft_is_object(line))
-			obj_count++;
+		while (line[i] == ' ' || line[i] == '\t')
+			i++;
+		if (!ft_strncmp(&line[i], "L ", 2))
+			count[0]++;
+		else if (ft_is_object(line))
+			count[1]++;
 		free(line);
+		i = 0;
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (obj_count);
+	return (count);
 }
 
 static char	*ft_is_double(t_args *args, char *target, char *line, int fd)
@@ -62,12 +74,13 @@ static char	*ft_is_double(t_args *args, char *target, char *line, int fd)
 void	ft_put_argument(t_args *args, int fd)
 {
 	int		i;
+	int		k;
 	char	*line;
 
 	args->ambient_light = NULL;
 	args->camera = NULL;
-	args->light = NULL;
 	i = 0;
+	k = 0;
 	line = ft_strtrim(get_next_line(fd), " \t\r\b");
 	while (line)
 	{
@@ -77,9 +90,11 @@ void	ft_put_argument(t_args *args, int fd)
 		else if (!ft_strncmp(line, "C ", 2))
 			args->camera = ft_is_double(args, args->camera, line, fd);
 		else if (!ft_strncmp(line, "L ", 2))
-			args->light = ft_is_double(args, args->light, line, fd);
-		else if (line[0] != '\n' && line[0] != '#')
+			args->light[k++] = ft_strdup(line);
+		else if (ft_is_object(line))
 			args->objects[i++] = ft_strdup(line);
+		else if (line[0] != '\n' && line[0] != '#')
+			ft_is_double(args, "invalid", line, fd);
 		free(line);
 		line = ft_strtrim(get_next_line(fd), " \t\r\b");
 	}
@@ -88,17 +103,24 @@ void	ft_put_argument(t_args *args, int fd)
 t_args	*ft_allocate_args(char *file)
 {
 	t_args	*args;
-	int		obj_count;
+	int		*count;
 	int		fd;
 
-	obj_count = ft_obj_count(file);
+	count = ft_count(file);
 	args = ft_calloc(sizeof(t_args), 1);
-	if (obj_count > 0)
+	args->light_count = count[0];
+	args->obj_count = count[1];
+	free(count);
+	args->objects = ft_calloc(sizeof(char *), (args->obj_count + 1));
+	if (!args->objects)
+		ft_exit(ERROR_MALLOC, 2);
+	args->objects[args->obj_count] = NULL;
+	if (args->light_count > 0)
 	{
-		args->objects = ft_calloc(sizeof(char *), (obj_count + 1));
+		args->light = ft_calloc(sizeof(char *), (args->light_count + 1));
 		if (!args->objects)
 			ft_exit(ERROR_MALLOC, 2);
-		args->objects[obj_count] = NULL;
+		args->objects[args->light_count] = NULL;
 	}
 	fd = ft_get_fd(file);
 	ft_put_argument(args, fd);
