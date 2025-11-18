@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/17 16:21:02 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:38:47 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,11 @@ typedef struct s_scene
 //--- Parser
 void	ft_exit(char *message, int code);
 int		ft_is_rt(char *file);
-t_args	*ft_get_scene(char *file);
+t_args	*ft_get_args(char *file);
 int		ft_get_fd(char *file);
 void	ft_put_argument(t_args *args, int fd);
-void	ft_free_scene(t_args *args);
+void	ft_free_args(t_args *args);
 //void	ft_parser(t_scene *args);
-t_args	*ft_allocate_scene(char *file);
+t_args	*ft_allocate_args(char *file);
 
 #endif

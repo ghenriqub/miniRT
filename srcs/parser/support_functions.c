@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:46:12 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/17 16:20:44 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:36:22 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_free_split(char **arr)
 	free(arr);
 }
 
-void	ft_free_scene(t_args *args)
+void	ft_free_args(t_args *args)
 {
 	if (args->ambient_light)
 		free(args->ambient_light);

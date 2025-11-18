@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/17 16:19:20 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/18 15:40:21 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*ft_is_double(t_args *args, char *target, char *line, int fd)
 	if (target)
 	{
 		free(line);
-		ft_free_scene(args);
+		ft_free_args(args);
 		close(fd);
 		ft_exit(ERROR_SCENE, 2);
 	}
@@ -85,7 +85,7 @@ void	ft_put_argument(t_args *args, int fd)
 	}
 }
 
-t_args	*ft_allocate_scene(char *file)
+t_args	*ft_allocate_args(char *file)
 {
 	t_args	*args;
 	int		obj_count;
