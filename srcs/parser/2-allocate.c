@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/18 16:26:27 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:43:42 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ static char	*ft_is_double(t_args *args, char *target, char *line, int fd)
 	return (ft_strdup(line));
 }
 
+// 1 - set args NULL
+// 2 - strtrim for erase spaces
+// 3 - fill scruct according the type of the lines
+// 4 - Cam and ambient light can't duplicate
+// if invalid argument, call ft_is_double for free and exit
 void	ft_put_argument(t_args *args, int fd)
 {
 	int		i;
@@ -100,6 +105,9 @@ void	ft_put_argument(t_args *args, int fd)
 	}
 }
 
+// 1- call ft_count to get number of the Lights and objets
+// 2 - allocate memory for struct and arrays-arrays
+// 3 - call ft_put_argument to fill struct
 t_args	*ft_allocate_args(char *file)
 {
 	t_args	*args;
