@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:54:58 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/15 16:04:43 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/11/19 16:25:27 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ void	ft_putnbr_fd(int n, int fd);
 char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
+int		count_parts(const char *str, char sep);
 
 #endif

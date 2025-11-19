@@ -6,13 +6,13 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:54:49 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/08/21 11:49:22 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/19 16:25:32 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	count_parts(const char *str, char sep)
+int	count_parts(const char *str, char sep)
 {
 	int	i;
 	int	count;

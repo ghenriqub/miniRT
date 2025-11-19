@@ -6,7 +6,7 @@
 #    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/11/18 15:39:25 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/11/19 15:04:51 by lgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #sources
 SRC = $(PARSER_DIR)/0-main.c \
 			$(PARSER_DIR)/support_functions.c \
-			$(PARSER_DIR)/1-get_args.c \
+			$(PARSER_DIR)/1-get_scene.c \
 			$(PARSER_DIR)/2-allocate.c
 
 #objects

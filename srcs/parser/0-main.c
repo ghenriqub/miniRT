@@ -6,56 +6,19 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/18 16:28:05 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/19 17:29:56 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	debug_scene(t_args *args)
-{
-	int	i;
-
-	i = 0;
-	printf("\n===== SCENE =====\n");
-	printf("Ambient light: %s\n", args->ambient_light);
-	printf("Camera:        %s\n", args->camera);
-	printf("lights:\n");
-	if (!args->light)
-		printf("  (light== null)\n");
-	else
-	{
-		i = 0;
-		while (args->light[i])
-		{
-			printf("  [%d] %s\n", i, args->light[i]);
-			i++;
-		}
-	}
-	printf("Objects:\n");
-	if (!args->objects)
-		printf("  (objects == null)\n");
-	else
-	{
-		i = 0;
-		while (args->objects[i])
-		{
-			printf("  [%d] %s\n", i, args->objects[i]);
-			i++;
-		}
-	}
-	printf("\n=======================\n\n");
-}
-
 int	main(int argc, char **argv)
 {
-	t_args	*args;
+	t_scene	*scene;
 
 	if (argc != 2 || ft_is_rt(argv[1]))
 		ft_exit(ERROR_PARAM, 1);
-	args = ft_get_args(argv[1]);
-	debug_scene(args);
-	ft_free_args(args);
+	scene = ft_get_scene(argv[1]);
 	return (0);
 }
 
