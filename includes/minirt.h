@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/19 17:34:14 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/20 15:07:34 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,12 @@ typedef struct s_args
 	int		obj_count;
 }	t_args;
 
-typedef struct s_point
+typedef struct s_vec3
 {
 	float	x;
 	float	y;
 	float	z;
-}	t_point;
-
-typedef struct s_vec
-{
-	float	x;
-	float	y;
-	float	z;
-}	t_vec;
+}	t_vec3;
 
 typedef struct s_rgb
 {
@@ -59,36 +52,36 @@ typedef struct s_ambient_light
 
 typedef struct s_camera
 {
-	t_point	position;
-	t_vec	vector;
+	t_vec3	position;
+	t_vec3	vector;
 	int		fov;
 }	t_camera;
 
 typedef struct s_light
 {
-	t_point	position;
+	t_vec3	position;
 	float	ratio;
 	t_rgb	color;
 }	t_light;
 
 typedef struct s_sphere
 {
-	t_point	center;
+	t_vec3	center;
 	float	diameter;
 	t_rgb	color;
 }	t_sphere;
 
 typedef struct s_plane
 {
-	t_point	point;
-	t_vec	vector;
+	t_vec3	point;
+	t_vec3	vector;
 	t_rgb	color;
 }	t_plane;
 
 typedef struct s_cylinder
 {
-	t_point	center;
-	t_vec	vector;
+	t_vec3	center;
+	t_vec3	vector;
 	float	diameter;
 	float	height;
 	t_rgb	color;
@@ -130,6 +123,12 @@ t_ambient_light	*ft_parser_al(char *input);
 t_rgb			ft_get_rgb(char *str);
 float			ft_atof(const char *str);
 int				ft_parser_rgb(char *str);
+int				ft_parser_c(char *input);
 int				ft_parser_ratio(char *str, float min, float max);
+int				ft_is_normalized(char *str);
+int				ft_parse_vec3(char *str);
+t_vec3			ft_get_vec3(char *str);
+int				ft_float_format(const char *str);
+int				ft_parse_fov(char *str);
 
 #endif

@@ -5,69 +5,58 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/19 17:02:49 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/19 17:29:29 by lgertrud         ###   ########.fr       */
+/*   Created: 2025/11/20 14:13:09 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/11/20 15:06:55 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_rgb	ft_get_rgb(char *str)
+int	ft_parse_fov(char *str)
 {
-	t_rgb	rgb;
-	char	**vals;
+	float	fov;
 
-	vals = ft_split(str, ',');
-	if (!vals || ft_split_count(vals) != 3)
-	{
-		ft_free_split(vals);
-		ft_exit(ERROR_RGB, 2);
-	}
-	rgb.r = ft_atoi(vals[0]);
-	rgb.g = ft_atoi(vals[1]);
-	rgb.b = ft_atoi(vals[2]);
-	ft_free_split(vals);
-	return (rgb);
+	if (!ft_is_number(str))
+		return (0);
+	fov = ft_atof(str);
+	if (fov < 0 || fov > 180)
+		return (0);
+	return (1);
 }
 
-static void	ft_atof_decimal_part(const char *str, int *i, float *result)
+static int	ft_float_format_util(const char *str)
 {
-	float	decimal;
-
-	decimal = 0.1f;
-	if (str[*i] != '.')
-		return ;
-	(*i)++;
-	while (str[*i] >= '0' && str[*i] <= '9')
-	{
-		*result += (str[*i] - '0') * decimal;
-		decimal *= 0.1f;
-		(*i)++;
-	}
-}
-
-float	ft_atof(const char *str)
-{
-	int		i;
-	int		sign;
-	float	result;
+	int	i;
+	int	digits;
+	int	dots;
 
 	i = 0;
-	sign = 1;
-	result = 0.0f;
-	while (str[i] == ' ' || str[i] == '\t')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	digits = 0;
+	dots = 0;
+	while (str[i])
 	{
-		if (str[i] == '-')
-			sign = -1;
+		if (str[i] >= '0' && str[i] <= '9')
+			digits++;
+		else if (str[i] == '.')
+			if (++dots > 1)
+				return (0);
+		else
+			return (0);
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = result * 10.0f + (str[i] - '0');
+	return (digits > 0);
+}
+
+int	ft_float_format(const char *str)
+{
+	int	i;
+
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	if (str[i] == '+' || str[i] == '-')
 		i++;
-	}
-	ft_atof_decimal_part(str, &i, &result);
-	return (result * sign);
+	if (!str[i])
+		return (0);
+	return (ft_float_format_util(&str[i]));
 }

@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/19 17:28:07 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/20 14:16:49 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_ambient_light	*ft_parser_al(char *input)
 
 	if (count_parts(input, ' ') != 3)
 		return (NULL);
-	al = ft_calloc(sizeof(t_ambient), 1);
 	args = ft_split(input, ' ');
 	if (strncmp(args[0], "A", strlen(args[0])) != 0
 		|| !ft_parser_ratio(args[1], 0.0, 1.0)
@@ -55,8 +54,30 @@ t_ambient_light	*ft_parser_al(char *input)
 		ft_free_split(args);
 		return (NULL);
 	}
+	al = ft_calloc(sizeof(t_ambient), 1);
 	al->ratio = ft_atof(args[1]);
 	al->color = ft_get_rgb(args[2]);
 	ft_free_split(args);
 	return (al);
+}
+
+int	ft_parser_c(char *input)
+{
+	t_camera	*camera;
+	char		**args;
+
+	args = ft_split(input, ' ');
+	if (strncmp(args[0], "C", strlen(args[0])) != 0
+		|| !ft_parse_vec3(args[1])
+		|| !ft_parser_normalized(args[2])
+		|| !ft_parse_fov(args[3]))
+	{
+		ft_free_split(args);
+		return (NULL);
+	}
+	camera = ft_calloc(sizeof(t_camera), 1);
+	camera->position = ft_get_vec3(args[1]);
+	camera->vector = ft_get_vec3(args[2]);
+	camera->fov = atof(args[3]);
+	return (camera);
 }
