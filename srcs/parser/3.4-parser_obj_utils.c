@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   support_functions1.c                               :+:      :+:    :+:   */
+/*   3.4-parser_obj_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/20 16:13:14 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 17:02:49 by lgertrud         ###   ########.fr       */
+/*   Created: 2025/11/20 16:55:35 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/11/20 18:14:31 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	ft_free_arraystruc(void **arr, int count)
+void	*ft_get_obj(t_obj_type type, char *line)
 {
-	int	i;
-
-	i = -1;
-	if (!arr)
-		return ;
-	while (++i < count)
-		free(arr[i]);
-	free(arr);
+	if (type == SPHERE)
+		return (ft_parser_sphere(line));
+	if (type == PLANE)
+		return (ft_parser_plane(line));
+	if (type == CYLINDER)
+		return (ft_parser_cylinder(line));
+	return (NULL);
 }

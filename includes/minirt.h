@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 16:32:53 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:07:32 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int				ft_parser_rgb(char *str);
 t_camera		*ft_parser_c(char *input);
 int				ft_parser_ratio(char *str, float min, float max);
 int				ft_is_normalized(char *str);
-int				ft_parse_vec3(char *str);
+int				ft_parser_vec3(char *str);
 t_vec3			ft_get_vec3(char *str);
 int				ft_float_format(const char *str);
 int				ft_parse_fov(char *str);

@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:20:22 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 15:06:02 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/20 16:37:18 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_parser_ratio(char *str, float min, float max)
 	return (1);
 }
 
-int	ft_parse_vec3(char *str)
+int	ft_parser_vec3(char *str)
 {
 	char	**p;
 

@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 16:32:26 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:15:30 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ t_scene	*ft_parser(t_args *args)
 	scene->object_count = args->obj_count;
 	scene->ambient = ft_parser_al(args->ambient_light);
 	scene->camera = ft_parser_c(args->camera);
-	scene->light = ft_parser_l(args->light);
-	scene->objects = ft_parser_ob(args->objects);
+	scene->light = ft_parser_l(args->light, scene->light_count);
+	scene->objects = ft_parser_ob(args->objects, scene->object_count);
 	if (scene->ambient_light == NULL || scene->camera == NULL
 		|| (scene->light_count > 0 && scene->light == NULL)
 		|| (scene->objects[0] == NULL))
@@ -70,7 +70,7 @@ t_camera	*ft_parser_c(char *input)
 		return (NULL);
 	args = ft_split(input, ' ');
 	if (strncmp(args[0], "C", strlen(args[0])) != 0
-		|| !ft_parse_vec3(args[1])
+		|| !ft_parser_vec3(args[1])
 		|| !ft_parser_normalized(args[2])
 		|| !ft_parse_fov(args[3]))
 	{
@@ -90,19 +90,19 @@ t_light	**ft_parser_l(char **input, int count_light)
 	char	**args;
 	int		i;
 
-	i = 0;
 	light = ft_alloc_arraystruc(count_light, sizeof(t_light));
 	if (!lights)
 		return (NULL);
-	while (input[i++])
+	i = -1;
+	while (input[++i])
 	{
 		if (count_parts(input[i], ' ') != 4)
 			return (ft_free_light(light), NULL);
 		args = ft_split(input[i], ' ');
 		if (strncmp(args[0], "L", strlen(args[0])) != 0
-			|| !ft_parse_vec3(args[1])
+			|| !ft_parser_vec3(args[1])
 			|| !ft_parser_ratio(args[2], 0, 1)
-			|| !ft_parset_rgb(args[3]))
+			|| !ft_parser_rgb(args[3]))
 			return (ft_free_arraystruc(light, count_light),
 				ft_free_split(args), NULL);
 		light[i]->position = ft_get_vec3(args[1]);
@@ -111,4 +111,25 @@ t_light	**ft_parser_l(char **input, int count_light)
 		ft_free_split(args);
 	}
 	return (light);
+}
+
+t_object	**ft_parser_ob(char **input, int count_objects)
+{
+	t_object	**objects;
+	int			i;
+
+	objects = ft_alloc_array(count_objects, sizeof(t_object));
+	if (!objects)
+		return (NULL);
+	i = -1;
+	while (++si < count_objects)
+	{
+		objects[i]->type = ft_get_type(input[i]);
+		if (objects[i]->type == -1)
+			return (ft_free_array((void **)objects, count_objects), NULL);
+		objects[i]->data = ft_get_obj(objects[i]->type, input[i]);
+		if (data == NULL)
+			return (ft_free_array((void **)objects, count_objects), NULL);
+	}
+	return (objects);
 }
