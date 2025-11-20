@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 15:07:34 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/20 16:32:53 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ typedef struct s_object
 
 typedef struct s_scene
 {
-	t_ambient_light	ambient;
-	t_camera		camera;
-	t_light			*lights;
+	t_ambient_light	*ambient;
+	t_camera		*camera;
+	t_light			**lights;
 	int				light_count;
-	t_object		*objects;
+	t_object		**objects;
 	int				object_count;
 }	t_scene;
 
@@ -123,12 +123,14 @@ t_ambient_light	*ft_parser_al(char *input);
 t_rgb			ft_get_rgb(char *str);
 float			ft_atof(const char *str);
 int				ft_parser_rgb(char *str);
-int				ft_parser_c(char *input);
+t_camera		*ft_parser_c(char *input);
 int				ft_parser_ratio(char *str, float min, float max);
 int				ft_is_normalized(char *str);
 int				ft_parse_vec3(char *str);
 t_vec3			ft_get_vec3(char *str);
 int				ft_float_format(const char *str);
 int				ft_parse_fov(char *str);
+void			**ft_alloc_arraystruc(int count, size_t type_size);
+void			ft_free_arraystruc(void **arr, int count);
 
 #endif

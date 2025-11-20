@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:13:09 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 15:06:55 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/20 16:30:39 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,30 @@ int	ft_float_format(const char *str)
 	if (!str[i])
 		return (0);
 	return (ft_float_format_util(&str[i]));
+}
+
+void	**ft_alloc_arraystruc(int count, size_t type_size)
+{
+	int		i;
+	int		k;
+	void	**arr;
+
+	arr = ft_calloc(count, sizeof(void *));
+	if (!arr)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		arr[i] = ft_calloc(1, type_size);
+		if (!arr[i])
+		{
+			k = 0;
+			while (k++ < i)
+				free(arr[k]);
+			free(arr);
+			return (NULL);
+		}
+		i++;
+	}
+	return (arr);
 }
