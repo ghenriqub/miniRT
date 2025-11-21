@@ -6,11 +6,12 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 16:13:14 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 21:49:05 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 22:07:26 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+/*this file have free functions.*/
 
 void	ft_free_arraystruc(void **arr, int count)
 {

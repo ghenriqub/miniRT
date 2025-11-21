@@ -6,12 +6,13 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:20:22 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 19:34:34 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 21:59:27 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+// verified if all str value is a number
 int	ft_is_number(char *str)
 {
 	int	i;
@@ -28,6 +29,8 @@ int	ft_is_number(char *str)
 	return (1);
 }
 
+// 1 - verified if have 3 parts when we split with ","
+// 2 - check if each part is a number and if it are between 0 - 255. 
 int	ft_parser_rgb(char *str)
 {
 	char	**s;
@@ -50,6 +53,8 @@ int	ft_parser_rgb(char *str)
 	return (1);
 }
 
+// 1- call float format for check if the argument is a float
+// 2 - check if value are between min and max
 int	ft_parser_ratio(char *str, float min, float max)
 {
 	float	value;
@@ -62,6 +67,8 @@ int	ft_parser_ratio(char *str, float min, float max)
 	return (1);
 }
 
+// 1 - verify if have 3 parts when we split with ",".
+// 2 - check if all parts are in float format.
 int	ft_parser_vec3(char *str)
 {
 	char	**p;
@@ -77,6 +84,8 @@ int	ft_parser_vec3(char *str)
 	return (1);
 }
 
+// 1 - call parser vec3 for verify if str is a vector with 3 argument
+// 2 - call parser ratio, check if is a float and between -1 and 1.
 int	ft_is_normalized(char *str)
 {
 	char	**args;

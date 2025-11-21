@@ -6,17 +6,18 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:13:09 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 20:39:40 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 22:03:20 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+// verify if is a float and if are between 0 - 180.
 int	ft_parse_fov(char *str)
 {
 	float	fov;
 
-	if (!ft_is_number(str))
+	if (!ft_float_format(str))
 		return (0);
 	fov = ft_atof(str);
 	if (fov < 0 || fov > 180)
@@ -24,6 +25,7 @@ int	ft_parse_fov(char *str)
 	return (1);
 }
 
+// verify if is a digit and if have 0 or 1 point
 static int	ft_float_format_util(const char *str)
 {
 	int	i;
@@ -49,6 +51,7 @@ static int	ft_float_format_util(const char *str)
 	return (digits > 0);
 }
 
+// verify if have a signal, and call util
 int	ft_float_format(const char *str)
 {
 	int	i;
@@ -63,6 +66,7 @@ int	ft_float_format(const char *str)
 	return (ft_float_format_util(&str[i]));
 }
 
+// used for free scructs
 void	**ft_alloc_arraystruc(int count, size_t type_size)
 {
 	void	**arr;

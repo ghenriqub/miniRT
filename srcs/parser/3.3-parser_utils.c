@@ -6,12 +6,13 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:02:49 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 20:40:17 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 22:05:29 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+// split str and return struct RGB.
 t_rgb	ft_get_rgb(char *str)
 {
 	t_rgb	rgb;
@@ -25,6 +26,7 @@ t_rgb	ft_get_rgb(char *str)
 	return (rgb);
 }
 
+// ft_float second part, decimal part. 
 static void	ft_atof_decimal_part(const char *str, int *i, float *result)
 {
 	float	decimal;
@@ -41,6 +43,7 @@ static void	ft_atof_decimal_part(const char *str, int *i, float *result)
 	}
 }
 
+// ascii to float, first part is the left number
 float	ft_atof(const char *str)
 {
 	int		i;
@@ -67,6 +70,7 @@ float	ft_atof(const char *str)
 	return (result * sign);
 }
 
+// return a vector with 3 values.
 t_vec3	ft_get_vec3(char *str)
 {
 	t_vec3	v;
@@ -80,6 +84,7 @@ t_vec3	ft_get_vec3(char *str)
 	return (v);
 }
 
+// translate \t to ' '
 char	*ft_tab_to_space(char *str)
 {
 	int	i;

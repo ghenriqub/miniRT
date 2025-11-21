@@ -12,6 +12,8 @@
 
 #include "minirt.h"
 
+// 1 - fill Args struct with user input
+// 2 - Arguments Parser, if all is ok, return struct scene
 t_scene	*ft_get_scene(char *file)
 {
 	t_args	*args;

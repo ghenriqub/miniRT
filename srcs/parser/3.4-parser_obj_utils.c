@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 16:55:35 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 20:43:37 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 22:06:35 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	*ft_parser_cylinder(char *line)
 	return (cy);
 }
 
+// return struct according to type.
 void	*ft_get_obj(t_obj_type type, char *line)
 {
 	if (type == SPHERE)
@@ -102,6 +103,7 @@ void	*ft_get_obj(t_obj_type type, char *line)
 	return (NULL);
 }
 
+// define the type of the object
 t_obj_type	ft_get_type(char *line)
 {
 	if (!ft_strncmp(line, "sp ", 3))
