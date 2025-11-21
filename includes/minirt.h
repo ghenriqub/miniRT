@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 18:07:32 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 20:45:59 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_vec3	point;
-	t_vec3	vector;
+	t_vec3	normal;
 	t_rgb	color;
 }	t_plane;
 
 typedef struct s_cylinder
 {
 	t_vec3	center;
-	t_vec3	vector;
+	t_vec3	normal;
 	float	diameter;
 	float	height;
 	t_rgb	color;
@@ -91,7 +91,8 @@ typedef enum e_obj_type
 {
 	SPHERE,
 	PLANE,
-	CYLINDER
+	CYLINDER,
+	INVALID
 }	t_obj_type;
 
 typedef struct s_object
@@ -113,24 +114,33 @@ typedef struct s_scene
 //--- Parser
 void			ft_exit(char *message, int code);
 int				ft_is_rt(char *file);
-t_args			*ft_get_scene(char *file);
+t_scene			*ft_get_scene(char *file);
 int				ft_get_fd(char *file);
 void			ft_put_argument(t_args *args, int fd);
 void			ft_free_args(t_args *args);
-void			ft_parser(t_scene *args);
+t_scene			*ft_parser(t_args *args);
 t_args			*ft_allocate_args(char *file);
 t_ambient_light	*ft_parser_al(char *input);
+t_camera		*ft_parser_c(char *input);
+t_light			**ft_parser_l(char **input, int count_light);
+t_object		**ft_parser_ob(char **input, int count_objects);
 t_rgb			ft_get_rgb(char *str);
 float			ft_atof(const char *str);
 int				ft_parser_rgb(char *str);
 t_camera		*ft_parser_c(char *input);
 int				ft_parser_ratio(char *str, float min, float max);
 int				ft_is_normalized(char *str);
+int				ft_is_number(char *str);
 int				ft_parser_vec3(char *str);
 t_vec3			ft_get_vec3(char *str);
 int				ft_float_format(const char *str);
 int				ft_parse_fov(char *str);
 void			**ft_alloc_arraystruc(int count, size_t type_size);
 void			ft_free_arraystruc(void **arr, int count);
+void			ft_free_scene(t_scene *scene);
+void			ft_free_split(char **arr);
+void			*ft_get_obj(t_obj_type type, char *line);
+t_obj_type		ft_get_type(char *line);
+char			*ft_tab_to_space(char *str);
 
 #endif

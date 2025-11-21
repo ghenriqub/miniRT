@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:02:49 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 15:05:36 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 20:40:17 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ t_rgb	ft_get_rgb(char *str)
 	char	**vals;
 
 	vals = ft_split(str, ',');
-	if (!vals || ft_split_count(vals) != 3)
-	{
-		ft_free_split(vals);
-		ft_exit(ERROR_RGB, 2);
-	}
 	rgb.r = ft_atoi(vals[0]);
 	rgb.g = ft_atoi(vals[1]);
 	rgb.b = ft_atoi(vals[2]);
@@ -83,4 +78,18 @@ t_vec3	ft_get_vec3(char *str)
 	v.z = ft_atof(parts[2]);
 	ft_free_split(parts);
 	return (v);
+}
+
+char	*ft_tab_to_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\t')
+			str[i] = ' ';
+		i++;
+	}
+	return (str);
 }

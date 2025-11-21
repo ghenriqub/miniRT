@@ -6,7 +6,7 @@
 #    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/11/19 15:04:51 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/11/21 19:45:36 by lgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,15 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 #sources
 SRC = $(PARSER_DIR)/0-main.c \
-			$(PARSER_DIR)/support_functions.c \
 			$(PARSER_DIR)/1-get_scene.c \
-			$(PARSER_DIR)/2-allocate.c
+			$(PARSER_DIR)/2-allocate.c \
+			$(PARSER_DIR)/3-parser.c \
+			$(PARSER_DIR)/3.1-parser_utils.c \
+			$(PARSER_DIR)/3.2-parser_utils.c \
+			$(PARSER_DIR)/3.3-parser_utils.c \
+			$(PARSER_DIR)/3.4-parser_obj_utils.c \
+			$(PARSER_DIR)/support_functions.c \
+			$(PARSER_DIR)/support_functions1.c \
 
 #objects
 OBJS = $(SRC:.c=.o)

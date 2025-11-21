@@ -6,13 +6,13 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:20:22 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 16:37:18 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 19:34:34 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static int	ft_is_number(char *str)
+int	ft_is_number(char *str)
 {
 	int	i;
 
@@ -35,7 +35,7 @@ int	ft_parser_rgb(char *str)
 	int		value;
 
 	s = ft_split(str, ',');
-	if (!s || ft_split_count(s) != 3)
+	if (!s || count_parts(str, ',') != 3)
 		return (ft_free_split(s), 0);
 	i = -1;
 	while (++i < 3)
@@ -67,7 +67,7 @@ int	ft_parser_vec3(char *str)
 	char	**p;
 
 	p = ft_split(str, ',');
-	if (!p || ft_split_count(p) != 3)
+	if (!p || count_parts(str, ',') != 3)
 		return (ft_free_split(p), 0);
 	if (!ft_float_format(p[0])
 		|| !ft_float_format(p[1])
@@ -83,10 +83,10 @@ int	ft_is_normalized(char *str)
 
 	if (!ft_parser_vec3(str))
 		return (0);
-	args = split(str);
-	if (ft_parser_ratio(str[0], -1, 1)
-		|| ft_parser_ratio(str[1], -1, 1)
-		|| ft_parser_ratio(str[2], -1, 1))
+	args = ft_split(str, ',');
+	if (!ft_parser_ratio(args[0], -1, 1)
+		|| !ft_parser_ratio(args[1], -1, 1)
+		|| !ft_parser_ratio(args[2], -1, 1))
 	{
 		ft_free_split(args);
 		return (0);

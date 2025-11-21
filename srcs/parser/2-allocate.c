@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 16:53:48 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 20:49:06 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	ft_is_object(char *line)
 	i = 0;
 	if (!line)
 		return (0);
-	while (line[i] == ' ' || line[i] == '\t')
+	while (line[i] == ' ')
 		i++;
 	if (!ft_strncmp(&line[i], "sp ", 3))
 		return (1);
@@ -37,23 +37,23 @@ static int	*ft_count(char *file)
 	char	*line;
 	int		i;
 
-	i = 0;
 	count = ft_calloc(2, sizeof(int));
 	if (!count)
 		ft_exit(ERROR_MALLOC, 2);
 	fd = ft_get_fd(file);
-	line = get_next_line(fd);
+	line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
 	while (line)
 	{
-		while (line[i] == ' ' || line[i] == '\t')
+		i = 0;
+		ft_tab_to_space(line);
+		while (line[i] == ' ')
 			i++;
 		if (!ft_strncmp(&line[i], "L ", 2))
 			count[0]++;
 		else if (ft_is_object(line))
 			count[1]++;
 		free(line);
-		i = 0;
-		line = get_next_line(fd);
+		line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
 	}
 	close(fd);
 	return (count);
@@ -83,12 +83,12 @@ void	ft_put_argument(t_args *args, int fd)
 	char	*line;
 
 	args->ambient_light = NULL;
-	args->camera = NULL;
 	i = 0;
 	k = 0;
-	line = ft_strtrim(get_next_line(fd), " \t\r\b");
+	line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
 	while (line)
 	{
+		ft_tab_to_space(line);
 		if (!ft_strncmp(line, "A ", 2))
 			args->ambient_light = ft_is_double(args,
 					args->ambient_light, line, fd);
@@ -101,7 +101,7 @@ void	ft_put_argument(t_args *args, int fd)
 		else if (line[0] != '\n' && line[0] != '#')
 			ft_is_double(args, "invalid", line, fd);
 		free(line);
-		line = ft_strtrim(get_next_line(fd), " \t\r\b");
+		line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
 	}
 }
 
@@ -116,6 +116,7 @@ t_args	*ft_allocate_args(char *file)
 
 	count = ft_count(file);
 	args = ft_calloc(sizeof(t_args), 1);
+	args->camera = NULL;
 	args->light_count = count[0];
 	args->obj_count = count[1];
 	free(count);
@@ -126,7 +127,7 @@ t_args	*ft_allocate_args(char *file)
 	if (args->light_count > 0)
 	{
 		args->light = ft_calloc(sizeof(char *), (args->light_count + 1));
-		if (!args->objects)
+		if (!args->light_count)
 			ft_exit(ERROR_MALLOC, 2);
 		args->objects[args->light_count] = NULL;
 	}

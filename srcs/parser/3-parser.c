@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 18:15:30 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 20:41:03 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,17 @@ t_scene	*ft_parser(t_args *args)
 	scene->object_count = args->obj_count;
 	scene->ambient = ft_parser_al(args->ambient_light);
 	scene->camera = ft_parser_c(args->camera);
-	scene->light = ft_parser_l(args->light, scene->light_count);
+	scene->lights = ft_parser_l(args->light, scene->light_count);
 	scene->objects = ft_parser_ob(args->objects, scene->object_count);
-	if (scene->ambient_light == NULL || scene->camera == NULL
-		|| (scene->light_count > 0 && scene->light == NULL)
+	if (scene->ambient == NULL || scene->camera == NULL
+		|| (scene->light_count > 0 && scene->lights == NULL)
 		|| (scene->objects[0] == NULL))
 	{
 		ft_free_args(args);
 		ft_free_scene(scene);
 		ft_exit(ERROR_SCENE, 2);
 	}
+	return (scene);
 }
 
 // 1 - count parts to verified if have 3 arguments.
@@ -41,20 +42,20 @@ t_scene	*ft_parser(t_args *args)
 // 3 - strdup and get rgb for allocate arguments.
 t_ambient_light	*ft_parser_al(char *input)
 {
-	t_ambient	*al;
-	char		**args;
+	t_ambient_light	*al;
+	char			**args;
 
 	if (count_parts(input, ' ') != 3)
 		return (NULL);
 	args = ft_split(input, ' ');
-	if (strncmp(args[0], "A", strlen(args[0])) != 0
+	if (ft_strncmp(args[0], "A", ft_strlen(args[0])) != 0
 		|| !ft_parser_ratio(args[1], 0.0, 1.0)
 		|| !ft_parser_rgb(args[2]))
 	{
 		ft_free_split(args);
 		return (NULL);
 	}
-	al = ft_calloc(sizeof(t_ambient), 1);
+	al = ft_calloc(sizeof(t_ambient_light), 1);
 	al->ratio = ft_atof(args[1]);
 	al->color = ft_get_rgb(args[2]);
 	ft_free_split(args);
@@ -69,9 +70,9 @@ t_camera	*ft_parser_c(char *input)
 	if (count_parts(input, ' ') != 4)
 		return (NULL);
 	args = ft_split(input, ' ');
-	if (strncmp(args[0], "C", strlen(args[0])) != 0
+	if (ft_strncmp(args[0], "C", ft_strlen(args[0])) != 0
 		|| !ft_parser_vec3(args[1])
-		|| !ft_parser_normalized(args[2])
+		|| !ft_is_normalized(args[2])
 		|| !ft_parse_fov(args[3]))
 	{
 		ft_free_split(args);
@@ -90,20 +91,20 @@ t_light	**ft_parser_l(char **input, int count_light)
 	char	**args;
 	int		i;
 
-	light = ft_alloc_arraystruc(count_light, sizeof(t_light));
-	if (!lights)
+	light = (t_light **)ft_alloc_arraystruc(count_light, sizeof(t_light));
+	if (!light)
 		return (NULL);
 	i = -1;
 	while (input[++i])
 	{
 		if (count_parts(input[i], ' ') != 4)
-			return (ft_free_light(light), NULL);
+			return (ft_free_arraystruc((void **)light, count_light), NULL);
 		args = ft_split(input[i], ' ');
-		if (strncmp(args[0], "L", strlen(args[0])) != 0
+		if (ft_strncmp(args[0], "L", ft_strlen(args[0])) != 0
 			|| !ft_parser_vec3(args[1])
 			|| !ft_parser_ratio(args[2], 0, 1)
 			|| !ft_parser_rgb(args[3]))
-			return (ft_free_arraystruc(light, count_light),
+			return (ft_free_arraystruc((void **)light, count_light),
 				ft_free_split(args), NULL);
 		light[i]->position = ft_get_vec3(args[1]);
 		light[i]->ratio = ft_atof(args[2]);
@@ -118,18 +119,18 @@ t_object	**ft_parser_ob(char **input, int count_objects)
 	t_object	**objects;
 	int			i;
 
-	objects = ft_alloc_array(count_objects, sizeof(t_object));
+	objects = (t_object **)ft_alloc_arraystruc(count_objects, sizeof(t_object));
 	if (!objects)
 		return (NULL);
 	i = -1;
-	while (++si < count_objects)
+	while (++i < count_objects)
 	{
 		objects[i]->type = ft_get_type(input[i]);
-		if (objects[i]->type == -1)
-			return (ft_free_array((void **)objects, count_objects), NULL);
+		if (objects[i]->type == INVALID)
+			return (ft_free_arraystruc((void **)objects, count_objects), NULL);
 		objects[i]->data = ft_get_obj(objects[i]->type, input[i]);
-		if (data == NULL)
-			return (ft_free_array((void **)objects, count_objects), NULL);
+		if (objects[i]->data == NULL)
+			return (ft_free_arraystruc((void **)objects, count_objects), NULL);
 	}
 	return (objects);
 }

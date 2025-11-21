@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:13:09 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/20 16:30:39 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 20:39:40 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ static int	ft_float_format_util(const char *str)
 		if (str[i] >= '0' && str[i] <= '9')
 			digits++;
 		else if (str[i] == '.')
-			if (++dots > 1)
+		{
+			if (++dots > 1 || !str[i + 1])
 				return (0);
+		}
 		else
 			return (0);
 		i++;
@@ -63,11 +65,12 @@ int	ft_float_format(const char *str)
 
 void	**ft_alloc_arraystruc(int count, size_t type_size)
 {
-	int		i;
-	int		k;
 	void	**arr;
+	int		i;
 
-	arr = ft_calloc(count, sizeof(void *));
+	if (count <= 0)
+		return (NULL);
+	arr = ft_calloc(count + 1, sizeof(void *));
 	if (!arr)
 		return (NULL);
 	i = 0;
@@ -76,13 +79,13 @@ void	**ft_alloc_arraystruc(int count, size_t type_size)
 		arr[i] = ft_calloc(1, type_size);
 		if (!arr[i])
 		{
-			k = 0;
-			while (k++ < i)
-				free(arr[k]);
+			while (--i >= 0)
+				free(arr[i]);
 			free(arr);
 			return (NULL);
 		}
 		i++;
 	}
+	arr[count] = NULL;
 	return (arr);
 }
