@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 20:41:03 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 21:41:36 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_scene	*ft_parser(t_args *args)
 	scene->objects = ft_parser_ob(args->objects, scene->object_count);
 	if (scene->ambient == NULL || scene->camera == NULL
 		|| (scene->light_count > 0 && scene->lights == NULL)
-		|| (scene->objects[0] == NULL))
+		|| (scene->objects == NULL))
 	{
 		ft_free_args(args);
 		ft_free_scene(scene);
@@ -82,6 +82,7 @@ t_camera	*ft_parser_c(char *input)
 	camera->position = ft_get_vec3(args[1]);
 	camera->vector = ft_get_vec3(args[2]);
 	camera->fov = atof(args[3]);
+	ft_free_split(args);
 	return (camera);
 }
 
@@ -127,10 +128,10 @@ t_object	**ft_parser_ob(char **input, int count_objects)
 	{
 		objects[i]->type = ft_get_type(input[i]);
 		if (objects[i]->type == INVALID)
-			return (ft_free_arraystruc((void **)objects, count_objects), NULL);
+			return (ft_free_objects_struc(objects, count_objects), NULL);
 		objects[i]->data = ft_get_obj(objects[i]->type, input[i]);
 		if (objects[i]->data == NULL)
-			return (ft_free_arraystruc((void **)objects, count_objects), NULL);
+			return (ft_free_objects_struc(objects, count_objects), NULL);
 	}
 	return (objects);
 }

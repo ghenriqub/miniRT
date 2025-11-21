@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 20:45:59 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 21:42:00 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,5 +142,6 @@ void			ft_free_split(char **arr);
 void			*ft_get_obj(t_obj_type type, char *line);
 t_obj_type		ft_get_type(char *line);
 char			*ft_tab_to_space(char *str);
+void			ft_free_objects_struc(t_object **arr, int count);
 
 #endif

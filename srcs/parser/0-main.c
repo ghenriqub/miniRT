@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 20:52:48 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/21 21:48:18 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,7 @@ void ft_print_scene(t_scene *scene)
     }
 
     printf("\n==============================\n\n");
-}
-*/
+}*/
 
 int	main(int argc, char **argv)
 {
@@ -123,8 +122,8 @@ int	main(int argc, char **argv)
 
 	if (argc != 2 || ft_is_rt(argv[1]))
 		ft_exit(ERROR_PARAM, 1);
-	//scene = ft_get_scene(argv[1]);
-	ft_print_scene(scene);
+	scene = ft_get_scene(argv[1]);
+	//ft_print_scene(scene);
 	ft_free_scene(scene);
 	return (0);
 }
