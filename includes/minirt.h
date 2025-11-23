@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 21:42:00 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/23 19:38:17 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINIRT_H
 
 # include "libft.h"
+# include <stdbool.h>
+# include <math.h>
 
 # define ERROR_PARAM "Error\nUsage: ./minirt <file.rt>"
 # define ERROR_FILE "Error\nCannot open this found."
@@ -111,7 +113,8 @@ typedef struct s_scene
 	int				object_count;
 }	t_scene;
 
-//--- Parser
+// ============ Parser ============
+
 void			ft_exit(char *message, int code);
 int				ft_is_rt(char *file);
 t_scene			*ft_get_scene(char *file);
@@ -143,5 +146,18 @@ void			*ft_get_obj(t_obj_type type, char *line);
 t_obj_type		ft_get_type(char *line);
 char			*ft_tab_to_space(char *str);
 void			ft_free_objects_struc(t_object **arr, int count);
+
+// ============ Vectors ============
+t_vec3			vec3_add(t_vec3 vec1, t_vec3 vec2);
+// t_vec3			atovec3(char **vec);
+bool			vec3_cmp(t_vec3 vec1, t_vec3 vec2);
+double			vec3_cos(t_vec3 vec1, t_vec3 vec2);
+t_vec3			vec3_cross(t_vec3 vec1, t_vec3 vec2);
+double			vec3_dot(t_vec3 vec1, t_vec3 vec2);
+double			vec3_len(t_vec3 vec);
+t_vec3			vec3_new(double x, double y, double z);
+t_vec3  		vec3_normalize(t_vec3 vec);
+t_vec3			vec3_scale(t_vec3 vec1, double scalar);
+t_vec3  		vec3_sub(t_vec3 vec1, t_vec3 vec2);
 
 #endif

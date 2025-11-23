@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
+#    By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/11/21 19:45:36 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/11/23 19:11:06 by ghenriqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = miniRT
 
 #compiler and flags
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror -lm
 
 #directories
 SRC_DIR = src

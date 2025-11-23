@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   0-main.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 22:08:15 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/11/23 18:54:05 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
 /*
 static void ft_print_vec3(t_vec3 v)
 {
@@ -114,7 +115,8 @@ void ft_print_scene(t_scene *scene)
     }
 
     printf("\n==============================\n\n");
-}*/
+}
+*/
 
 int	main(int argc, char **argv)
 {
@@ -123,7 +125,7 @@ int	main(int argc, char **argv)
 	if (argc != 2 || ft_is_rt(argv[1]))
 		ft_exit(ERROR_PARAM, 1);
 	scene = ft_get_scene(argv[1]);
-	//ft_print_scene(scene);
+	// ft_print_scene(scene);
 	ft_free_scene(scene);
 	return (0);
 }
