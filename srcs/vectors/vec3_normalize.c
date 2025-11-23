@@ -6,13 +6,13 @@
 /*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 19:28:05 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/11/23 19:33:09 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/11/23 19:43:38 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-double  vec3_normalize(t_vec3 vec)
+t_vec3  vec3_normalize(t_vec3 vec)
 {
     return (vec3_scale(vec, 1.0 / vec3_len(vec)));
 }
