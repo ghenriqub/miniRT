@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/23 19:38:17 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/11/30 17:53:39 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void			ft_free_objects_struc(t_object **arr, int count);
 
 // ============ Vectors ============
 t_vec3			vec3_add(t_vec3 vec1, t_vec3 vec2);
-// t_vec3			atovec3(char **vec);
+t_vec3			atovec3(char **vec);
 bool			vec3_cmp(t_vec3 vec1, t_vec3 vec2);
 double			vec3_cos(t_vec3 vec1, t_vec3 vec2);
 t_vec3			vec3_cross(t_vec3 vec1, t_vec3 vec2);

@@ -6,20 +6,19 @@
 /*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 19:18:28 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/11/23 19:35:37 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/11/30 17:57:16 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// meter as funcoes ft_atod
 t_vec3  atovec3(char **vec)
 {
-    // return ((t_vec3)
-    //     {
-    //         .x = (vec[X]),
-    //         .y = (vec[Y]),
-    //         .z = (vec[Z]),
-    //     }
-    // );
+    return ((t_vec3)
+        {
+            .x = ft_atod(vec[X]),
+            .y = ft_atod(vec[Y]),
+            .z = ft_atod(vec[Z]),
+        }
+    );
 }
