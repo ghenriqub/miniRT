@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/01 16:42:17 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/01 19:51:06 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ int	main(int argc, char **argv)
 	if (argc != 2 || ft_is_rt(argv[1]))
 		ft_exit(ERROR_PARAM, 1);
 	scene = ft_get_scene(argv[1]);
+	// ft_init_viewport(scene); aqui precisa inicializar a parte de left up right randerer ray.c
+	ft_init_graphics(scene);
 	// ft_print_scene(scene);
 	ft_free_scene(scene);
 	return (0);

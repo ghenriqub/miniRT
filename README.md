@@ -30,64 +30,64 @@
 │  4. RENDER LOOP (for each pixel)                                │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
-        ┌─────────────────────────────────────┐
-        │  For y = 0 to HEIGHT               │
-        │    For x = 0 to WIDTH              │
-        └─────────────────────────────────────┘
-                              ↓
         ┌─────────────────────────────────────────────────┐
-        │  4a. GENERATE RAY                              │
-        │      • Convert pixel (x,y) to viewport [-1,1]  │
-        │      • Scale by viewport dimensions            │
-        │      • Apply camera basis vectors              │
-        │      • Normalize ray direction                 │
+        │  	 For y = 0 to HEIGHT                          │
+        │    For x = 0 to WIDTH                           │
         └─────────────────────────────────────────────────┘
                               ↓
         ┌─────────────────────────────────────────────────┐
-        │  4b. INTERSECTION TEST                         │
-        │      • Test ray against all shapes             │
-        │      • Keep closest hit (smallest t > 0)       │
-        │      • Store: t, point, shape, color           │
+        │  4a. GENERATE RAY                               │
+        │      • Convert pixel (x,y) to viewport [-1,1]   │
+        │      • Scale by viewport dimensions             │
+        │      • Apply camera basis vectors               │
+        │      • Normalize ray direction                  │
         └─────────────────────────────────────────────────┘
                               ↓
         ┌─────────────────────────────────────────────────┐
-        │  4c. COMPUTE NORMAL                            │
-        │      • Sphere: (point - center)                │
-        │      • Plane: plane.normal                     │
-        │      • Cylinder: perpendicular to axis/caps    │
-        │      • Normalize result                        │
+        │  4b. INTERSECTION TEST                          │
+        │      • Test ray against all shapes              │
+        │      • Keep closest hit (smallest t > 0)        │
+        │      • Store: t, point, shape, color            │
         └─────────────────────────────────────────────────┘
                               ↓
         ┌─────────────────────────────────────────────────┐
-        │  4d. LIGHTING CALCULATION                      │
-        │      ┌────────────────────────────────┐        │
-        │      │  Ambient Component             │        │
-        │      │  color × ambient_ratio         │        │
-        │      └────────────────────────────────┘        │
-        │                    ↓                           │
-        │      ┌────────────────────────────────┐        │
-        │      │  Shadow Test                   │        │
-        │      │  • Cast ray to light           │        │
-        │      │  • Check for occlusion         │        │
-        │      └────────────────────────────────┘        │
-        │                    ↓                           │
-        │      ┌────────────────────────────────┐        │
-        │      │  If NOT in shadow:             │        │
-        │      │  Diffuse Component             │        │
-        │      │  • cos(angle) × attenuation    │        │
-        │      │  • color × light_intensity     │        │
-        │      └────────────────────────────────┘        │
-        │                    ↓                           │
-        │      ┌────────────────────────────────┐        │
-        │      │  Final Color                   │        │
-        │      │  ambient + diffuse             │        │
-        │      └────────────────────────────────┘        │
+        │  4c. COMPUTE NORMAL                             │
+        │      • Sphere: (point - center)                 │
+        │      • Plane: plane.normal                      │
+        │      • Cylinder: perpendicular to axis/caps     │
+        │      • Normalize result                         │
         └─────────────────────────────────────────────────┘
                               ↓
         ┌─────────────────────────────────────────────────┐
-        │  4e. WRITE PIXEL                               │
-        │      • Clamp RGB to [0, 255]                   │
-        │      • Write to image buffer                   │
+        │  4d. LIGHTING CALCULATION                       │
+        │      ┌────────────────────────────────┐         │
+        │      │  Ambient Component             │         │
+        │      │  color × ambient_ratio         │         │
+        │      └────────────────────────────────┘         │
+        │                    ↓                            │
+        │      ┌────────────────────────────────┐         │
+        │      │  Shadow Test                   │         │
+        │      │  • Cast ray to light           │         │
+        │      │  • Check for occlusion         │         │
+        │      └────────────────────────────────┘         │
+        │                    ↓                            │
+        │      ┌────────────────────────────────┐         │
+        │      │  If NOT in shadow:             │         │
+        │      │  Diffuse Component             │         │
+        │      │  • cos(angle) × attenuation    │         │
+        │      │  • color × light_intensity     │         │
+        │      └────────────────────────────────┘         │
+        │                    ↓                            │
+        │      ┌────────────────────────────────┐         │
+        │      │  Final Color                   │         │
+        │      │  ambient + diffuse             │         │
+        │      └────────────────────────────────┘         │
+        └─────────────────────────────────────────────────┘
+                              ↓
+        ┌─────────────────────────────────────────────────┐
+        │  4e. WRITE PIXEL                                │
+        │      • Clamp RGB to [0, 255]                    │
+        │      • Write to image buffer                    │
         └─────────────────────────────────────────────────┘
                               ↓
                       (next pixel)

@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/01 16:38:54 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/01 19:42:58 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # define ERROR_FILE "Error\nCannot open this found."
 # define ERROR_MALLOC "Error\nCannot allocate memmory."
 # define ERROR_SCENE "Error\ninvalid scene."
+# define WIDTH 800
+# define HEIGHT 1400
 
 typedef struct s_args
 {
@@ -103,6 +105,19 @@ typedef struct s_object
 	void		*data;
 }	t_object;
 
+typedef struct s_graphics
+{
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		height;
+	int		width;
+	int		bpp;
+	int		line_length;
+	int		endian;
+}	t_graphics;
+
 typedef struct s_scene
 {
 	t_ambient_light	*ambient;
@@ -111,20 +126,9 @@ typedef struct s_scene
 	int				light_count;
 	t_object		**objects;
 	int				object_count;
-}	t_scene;
+	t_graphics		disp;
 
-// typedef struct s_graphics
-// {
-// 	void	*mlx;
-// 	void	*win;
-// 	void	*img;
-// 	char	*addr;
-// 	int		height;
-// 	int		width;
-// 	int		bpp;
-// 	int		line_length;
-// 	int		endian;
-// }	t_graphics;
+}	t_scene;
 
 // typedef struct s_world
 // {

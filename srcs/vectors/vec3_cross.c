@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 18:59:59 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/11/23 19:03:42 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/01 17:51:08 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_vec3	vec3_cross(t_vec3 vec1, t_vec3 vec2)
 	t_vec3	res;
 
 	res.x = vec1.y * vec2.z - vec1.z * vec2.y;
-	res.y = vec1.z * vec2.x - vec1.z * vec2.z;
+	res.y = vec1.z * vec2.x - vec1.x * vec2.z;
 	res.z = vec1.x * vec2.y - vec1.z * vec2.x;
 	return (res);
 }
