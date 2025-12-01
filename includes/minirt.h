@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/30 18:06:48 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/01 16:38:54 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,33 +113,33 @@ typedef struct s_scene
 	int				object_count;
 }	t_scene;
 
-typedef struct s_graphics
-{
-	void	*mlx;
-	void	*win;
-	void	*img;
-	char	*addr;
-	int		height;
-	int		width;
-	int		bpp;
-	int		line_length;
-	int		endian;
-}	t_graphics;
+// typedef struct s_graphics
+// {
+// 	void	*mlx;
+// 	void	*win;
+// 	void	*img;
+// 	char	*addr;
+// 	int		height;
+// 	int		width;
+// 	int		bpp;
+// 	int		line_length;
+// 	int		endian;
+// }	t_graphics;
 
-typedef struct s_world
-{
-	t_camera	camera;
-	t_light		ambient;
-	t_vec3		*lights;
-	t_vec3		*shapes;
-	int			counters[3];
-	t_graphics	disp;
-	t_vec3		up;
-	t_vec3		right;
-	char		**map;
-	double		hview;
-	double		wview;
-}	t_world;
+// typedef struct s_world
+// {
+// 	t_camera	camera;
+// 	t_light		ambient;
+// 	t_vec3		*lights;
+// 	t_vec3		*shapes;
+// 	int			counters[3];
+// 	t_graphics	disp;
+// 	t_vec3		up;
+// 	t_vec3		right;
+// 	char		**map;
+// 	double		hview;
+// 	double		wview;
+// }	t_world;
 
 // ============ Parser ============
 
