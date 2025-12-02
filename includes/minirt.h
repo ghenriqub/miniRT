@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/02 15:24:44 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:37:53 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ typedef struct s_args
 
 typedef struct s_vec3
 {
-	float	x;
-	float	y;
-	float	z;
+	double	x;
+	double	y;
+	double	z;
 }	t_vec3;
 
 typedef struct s_rgb
@@ -50,7 +50,7 @@ typedef struct s_rgb
 
 typedef struct s_ambient_light
 {
-	float	ratio;
+	double	ratio;
 	t_rgb	color;
 }	t_ambient_light;
 
@@ -64,14 +64,14 @@ typedef struct s_camera
 typedef struct s_light
 {
 	t_vec3	position;
-	float	ratio;
+	double	ratio;
 	t_rgb	color;
 }	t_light;
 
 typedef struct s_sphere
 {
 	t_vec3	center;
-	float	diameter;
+	double	diameter;
 	t_rgb	color;
 }	t_sphere;
 
@@ -86,8 +86,8 @@ typedef struct s_cylinder
 {
 	t_vec3	center;
 	t_vec3	normal;
-	float	diameter;
-	float	height;
+	double	diameter;
+	double	height;
 	t_rgb	color;
 }	t_cylinder;
 
@@ -160,10 +160,9 @@ t_camera		*ft_parser_c(char *input);
 t_light			**ft_parser_l(char **input, int count_light);
 t_object		**ft_parser_ob(char **input, int count_objects);
 t_rgb			ft_get_rgb(char *str);
-float			ft_atof(const char *str);
 int				ft_parser_rgb(char *str);
 t_camera		*ft_parser_c(char *input);
-int				ft_parser_ratio(char *str, float min, float max);
+int				ft_parser_ratio(char *str, double min, double max);
 int				ft_is_normalized(char *str);
 int				ft_is_number(char *str);
 int				ft_parser_vec3(char *str);

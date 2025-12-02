@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:20:22 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 21:59:27 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:37:26 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ int	ft_parser_rgb(char *str)
 
 // 1- call float format for check if the argument is a float
 // 2 - check if value are between min and max
-int	ft_parser_ratio(char *str, float min, float max)
+int	ft_parser_ratio(char *str, double min, double max)
 {
 	float	value;
 
 	if (!ft_float_format(str))
 		return (0);
-	value = ft_atof(str);
+	value = ft_atod(str);
 	if (value < min || value > max)
 		return (0);
 	return (1);

@@ -6,13 +6,13 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/02 15:26:58 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:31:15 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-/*
+
 static void ft_print_vec3(t_vec3 v)
 {
     printf("(%.3f, %.3f, %.3f)", v.x, v.y, v.z);
@@ -116,7 +116,7 @@ void ft_print_scene(t_scene *scene)
 
     printf("\n==============================\n\n");
 }
-*/
+
 
 int	main(int argc, char **argv)
 {
@@ -126,8 +126,8 @@ int	main(int argc, char **argv)
 		ft_exit(ERROR_PARAM, 1);
 	scene = ft_get_scene(argv[1]);
 	// ft_init_viewport(scene); aqui precisa inicializar a parte de left up right randerer ray.c
-	ft_init_graphics(scene);
-	// ft_print_scene(scene);
+	//ft_init_graphics(scene);
+	ft_print_scene(scene);
 	ft_free_scene(scene);
 	return (0);
 }

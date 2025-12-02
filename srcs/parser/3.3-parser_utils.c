@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:02:49 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 22:05:29 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:34:36 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,50 +26,6 @@ t_rgb	ft_get_rgb(char *str)
 	return (rgb);
 }
 
-// ft_float second part, decimal part. 
-static void	ft_atof_decimal_part(const char *str, int *i, float *result)
-{
-	float	decimal;
-
-	decimal = 0.1f;
-	if (str[*i] != '.')
-		return ;
-	(*i)++;
-	while (str[*i] >= '0' && str[*i] <= '9')
-	{
-		*result += (str[*i] - '0') * decimal;
-		decimal *= 0.1f;
-		(*i)++;
-	}
-}
-
-// ascii to float, first part is the left number
-float	ft_atof(const char *str)
-{
-	int		i;
-	int		sign;
-	float	result;
-
-	i = 0;
-	sign = 1;
-	result = 0.0f;
-	while (str[i] == ' ' || str[i] == '\t')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = result * 10.0f + (str[i] - '0');
-		i++;
-	}
-	ft_atof_decimal_part(str, &i, &result);
-	return (result * sign);
-}
-
 // return a vector with 3 values.
 t_vec3	ft_get_vec3(char *str)
 {
@@ -77,9 +33,9 @@ t_vec3	ft_get_vec3(char *str)
 	char	**parts;
 
 	parts = ft_split(str, ',');
-	v.x = ft_atof(parts[0]);
-	v.y = ft_atof(parts[1]);
-	v.z = ft_atof(parts[2]);
+	v.x = ft_atod(parts[0]);
+	v.y = ft_atod(parts[1]);
+	v.z = ft_atod(parts[2]);
 	ft_free_split(parts);
 	return (v);
 }

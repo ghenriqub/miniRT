@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+         #
+#    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/11 14:55:02 by lgertrud          #+#    #+#              #
-#    Updated: 2025/11/30 17:57:30 by ghenriqu         ###   ########.fr        #
+#    Updated: 2025/12/02 15:30:30 by lgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

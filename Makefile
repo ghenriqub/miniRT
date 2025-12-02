@@ -6,7 +6,7 @@
 #    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/12/02 15:27:00 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/12/02 15:30:57 by lgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = miniRT
 
 #compiler and flags
 CC = cc
-FLAGS = -Wall -Wextra -Werror -lm
+FLAGS = -Wall -Wextra -Werror
 
 #directories
 SRC_DIR = src

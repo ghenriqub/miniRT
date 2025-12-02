@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 21:41:36 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:35:39 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_ambient_light	*ft_parser_al(char *input)
 		return (NULL);
 	}
 	al = ft_calloc(sizeof(t_ambient_light), 1);
-	al->ratio = ft_atof(args[1]);
+	al->ratio = ft_atod(args[1]);
 	al->color = ft_get_rgb(args[2]);
 	ft_free_split(args);
 	return (al);
@@ -81,7 +81,7 @@ t_camera	*ft_parser_c(char *input)
 	camera = ft_calloc(sizeof(t_camera), 1);
 	camera->position = ft_get_vec3(args[1]);
 	camera->vector = ft_get_vec3(args[2]);
-	camera->fov = atof(args[3]);
+	camera->fov = ft_atod(args[3]);
 	ft_free_split(args);
 	return (camera);
 }
@@ -108,7 +108,7 @@ t_light	**ft_parser_l(char **input, int count_light)
 			return (ft_free_arraystruc((void **)light, count_light),
 				ft_free_split(args), NULL);
 		light[i]->position = ft_get_vec3(args[1]);
-		light[i]->ratio = ft_atof(args[2]);
+		light[i]->ratio = ft_atod(args[2]);
 		light[i]->color = ft_get_rgb(args[3]);
 		ft_free_split(args);
 	}

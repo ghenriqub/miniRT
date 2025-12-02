@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:13:09 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 22:03:20 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:35:41 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_parse_fov(char *str)
 
 	if (!ft_float_format(str))
 		return (0);
-	fov = ft_atof(str);
+	fov = ft_atod(str);
 	if (fov < 0 || fov > 180)
 		return (0);
 	return (1);
