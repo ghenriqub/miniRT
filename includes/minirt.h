@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/01 19:42:58 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:24:44 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,8 +188,8 @@ t_vec3			vec3_cross(t_vec3 vec1, t_vec3 vec2);
 double			vec3_dot(t_vec3 vec1, t_vec3 vec2);
 double			vec3_len(t_vec3 vec);
 t_vec3			vec3_new(double x, double y, double z);
-t_vec3  		vec3_normalize(t_vec3 vec);
+t_vec3			vec3_normalize(t_vec3 vec);
 t_vec3			vec3_scale(t_vec3 vec1, double scalar);
-t_vec3  		vec3_sub(t_vec3 vec1, t_vec3 vec2);
+t_vec3			vec3_sub(t_vec3 vec1, t_vec3 vec2);
 
 #endif

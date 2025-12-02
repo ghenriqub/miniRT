@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minilibx_setup.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 19:33:59 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/01 19:51:56 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:24:04 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	ft_init_graphics(t_scene *scene)
 	scene->disp.img = mlx_new_image(scene->disp.mlx, WIDTH, HEIGHT);
 	if (!scene->disp.img)
 		return (1);
-	scene->disp.addr = mlw_get_data_addr(scene->disp.img, &scene->disp.bpp, \
-		&scene->disp.line_length, &scene->disp.endian);
+	scene->disp.addr = mlw_get_data_addr(scene->disp.img, &scene->disp.bpp,
+			&scene->disp.line_length, &scene->disp.endian);
 	if (!scene->disp.addr)
 		return (1);
 }

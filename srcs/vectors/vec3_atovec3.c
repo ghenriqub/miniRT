@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_atovec3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 19:18:28 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/11/30 17:57:16 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:22:44 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vec3  atovec3(char **vec)
+t_vec3	atovec3(char **vec)
 {
-    return ((t_vec3)
-        {
-            .x = ft_atod(vec[X]),
-            .y = ft_atod(vec[Y]),
-            .z = ft_atod(vec[Z]),
-        }
-    );
+	return ((t_vec3)
+		{
+			.x = ft_atod(vec[X]),
+			.y = ft_atod(vec[Y]),
+			.z = ft_atod(vec[Z]),
+		}
+	);
 }

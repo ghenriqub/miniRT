@@ -18,7 +18,7 @@ static int	get_sign(const char *str, int *i)
 
 	sign = 1;
 	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t' || str[*i] == '\n'
-		|| str[*i] == '\v' || str[*i] == '\f' || str[*i] == '\r'))
+			|| str[*i] == '\v' || str[*i] == '\f' || str[*i] == '\r'))
 		(*i)++;
 	if (str[*i] == '+' || str[*i] == '-')
 	{

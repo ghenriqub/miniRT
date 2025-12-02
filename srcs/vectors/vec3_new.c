@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   vec3_new.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 18:44:22 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/11/23 18:46:21 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:20:53 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vec3  vec3_new(double x, double y, double z)
+t_vec3	vec3_new(double x, double y, double z)
 {
-    return ((t_vec3){x, y, z});
+	return ((t_vec3){x, y, z});
 }
