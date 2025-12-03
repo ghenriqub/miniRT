@@ -6,7 +6,7 @@
 #    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/12/02 15:30:57 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/12/03 15:42:24 by lgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,10 +15,13 @@ NAME = miniRT
 #compiler and flags
 CC = cc
 FLAGS = -Wall -Wextra -Werror
+LDFLAG = -lm
 
 #directories
-SRC_DIR = src
-PARSER_DIR = srcs/parser
+SRC_DIR = srcs
+PARSER_DIR = $(SRC_DIR)/parser
+RAY_DIR = $(SRC_DIR)/ray
+VECTORS_DIR = $(SRC_DIR)/vectors
 I_DIR = includes
 LIBFT_DIR = libft
 
@@ -39,6 +42,18 @@ SRC = $(PARSER_DIR)/0-main.c \
 			$(PARSER_DIR)/3.4-parser_obj_utils.c \
 			$(PARSER_DIR)/support_functions.c \
 			$(PARSER_DIR)/support_functions1.c \
+		$(VECTORS_DIR)/vec3_add.c \
+			$(VECTORS_DIR)/vec3_atovec3.c \
+			$(VECTORS_DIR)/vec3_cmp.c \
+			$(VECTORS_DIR)/vec3_cross.c \
+			$(VECTORS_DIR)/vec3_dot.c \
+			$(VECTORS_DIR)/vec3_len.c \
+			$(VECTORS_DIR)/vec3_new.c \
+			$(VECTORS_DIR)/vec3_normalize.c \
+			$(VECTORS_DIR)/vec3_scale.c \
+			$(VECTORS_DIR)/vec3_sub.c \
+		$(RAY_DIR)/cam_data.c \
+			$(RAY_DIR)/ray.c
 
 #objects
 OBJS = $(SRC:.c=.o)

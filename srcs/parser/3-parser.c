@@ -31,6 +31,7 @@ t_scene	*ft_parser(t_args *args)
 		ft_free_scene(scene);
 		ft_exit(ERROR_SCENE, 2);
 	}
+	scene->camera->camdata = ft_compute_camera(*scene->camera, WIDTH, HEIGHT);
 	return (scene);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/02 15:37:53 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/03 15:46:32 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,30 @@
 # include <stdbool.h>
 # include <math.h>
 
+# define M_PI	3.14159265358979323846
 # define ERROR_PARAM "Error\nUsage: ./minirt <file.rt>"
 # define ERROR_FILE "Error\nCannot open this found."
 # define ERROR_MALLOC "Error\nCannot allocate memmory."
 # define ERROR_SCENE "Error\ninvalid scene."
 # define WIDTH 800
 # define HEIGHT 1400
+
+typedef struct s_vec3
+{
+	double	x;
+	double	y;
+	double	z;
+}	t_vec3;
+
+typedef struct s_camdata
+{
+	t_vec3	forward;
+	t_vec3	right;
+	t_vec3	up;
+
+	float	viewport_width;
+	float	viewport_height;
+}	t_camdata;
 
 typedef struct s_args
 {
@@ -33,13 +51,6 @@ typedef struct s_args
 	char	**objects;
 	int		obj_count;
 }	t_args;
-
-typedef struct s_vec3
-{
-	double	x;
-	double	y;
-	double	z;
-}	t_vec3;
 
 typedef struct s_rgb
 {
@@ -56,9 +67,10 @@ typedef struct s_ambient_light
 
 typedef struct s_camera
 {
-	t_vec3	position;
-	t_vec3	vector;
-	int		fov;
+	t_vec3		position;
+	t_vec3		vector;
+	t_camdata	camdata;
+	int			fov;
 }	t_camera;
 
 typedef struct s_light
@@ -130,6 +142,12 @@ typedef struct s_scene
 
 }	t_scene;
 
+typedef struct s_ray
+{
+	t_vec3	origin;
+	t_vec3	direction;
+}	t_ray;
+
 // typedef struct s_world
 // {
 // 	t_camera	camera;
@@ -190,5 +208,9 @@ t_vec3			vec3_new(double x, double y, double z);
 t_vec3			vec3_normalize(t_vec3 vec);
 t_vec3			vec3_scale(t_vec3 vec1, double scalar);
 t_vec3			vec3_sub(t_vec3 vec1, t_vec3 vec2);
+
+// ============ ray ============
+t_camdata		ft_compute_camera(t_camera cam, int width, int height);
+t_ray			ray(t_vec3 o, t_vec3 d);
 
 #endif

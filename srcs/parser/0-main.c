@@ -6,13 +6,13 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/02 15:31:15 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/02 16:42:39 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-
+/*
 static void ft_print_vec3(t_vec3 v)
 {
     printf("(%.3f, %.3f, %.3f)", v.x, v.y, v.z);
@@ -64,6 +64,19 @@ static void ft_print_object_data(t_object *obj)
     }
 }
 
+static void ft_print_camdata(t_camdata c)
+{
+    printf("  camdata:\n");
+    printf("    forward  = ");
+    ft_print_vec3(c.forward);
+    printf("\n    right    = ");
+    ft_print_vec3(c.right);
+    printf("\n    up       = ");
+    ft_print_vec3(c.up);
+    printf("\n    viewport = %.3f x %.3f\n", c.viewport_width, c.viewport_height);
+}
+
+
 void ft_print_scene(t_scene *scene)
 {
     if (!scene)
@@ -90,6 +103,7 @@ void ft_print_scene(t_scene *scene)
         printf("\n  vector   = ");
         ft_print_vec3(scene->camera->vector);
         printf("\n  fov      = %d\n", scene->camera->fov);
+        ft_print_camdata(scene->camera->camdata);
     }
 
     // LIGHTS 
@@ -115,8 +129,7 @@ void ft_print_scene(t_scene *scene)
     }
 
     printf("\n==============================\n\n");
-}
-
+}*/
 
 int	main(int argc, char **argv)
 {
@@ -127,7 +140,7 @@ int	main(int argc, char **argv)
 	scene = ft_get_scene(argv[1]);
 	// ft_init_viewport(scene); aqui precisa inicializar a parte de left up right randerer ray.c
 	//ft_init_graphics(scene);
-	ft_print_scene(scene);
+	//ft_print_scene(scene);
 	ft_free_scene(scene);
 	return (0);
 }
