@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/03 15:46:32 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/03 15:54:18 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,6 @@ t_vec3			vec3_sub(t_vec3 vec1, t_vec3 vec2);
 
 // ============ ray ============
 t_camdata		ft_compute_camera(t_camera cam, int width, int height);
-t_ray			ray(t_vec3 o, t_vec3 d);
+t_ray			ft_ray(t_vec3 o, t_vec3 d);
 
 #endif
