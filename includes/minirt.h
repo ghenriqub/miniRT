@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/03 15:54:18 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/06 16:18:57 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ typedef struct s_camdata
 	t_vec3	forward;
 	t_vec3	right;
 	t_vec3	up;
-
-	float	viewport_width;
-	float	viewport_height;
+	double	fov_rad;
+	double	viewport_width;
+	double	viewport_height;
 }	t_camdata;
 
 typedef struct s_args
