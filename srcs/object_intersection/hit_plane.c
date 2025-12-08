@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 15:42:52 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/08 16:46:45 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/08 20:50:00 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ bool	hit_plane(t_ray ray, t_plane *pl, double *t)
 	double	denom;
 
 	denom = vec3_dot(pl->normal, ray.direction);
-	vec3_dot(pl->normal, ray.direction);
 	if (fabs(denom) < 1e-6)
 		return (false);
 	p0l0 = vec3_sub(pl->point, ray.origin);
@@ -29,3 +28,4 @@ bool	hit_plane(t_ray ray, t_plane *pl, double *t)
 	*t = temp_t;
 	return (true);
 }
+
