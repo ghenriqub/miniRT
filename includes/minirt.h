@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/08 16:41:21 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/12 18:58:08 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,14 @@ typedef struct s_hsp
 
 }	t_hsp;
 
+typedef struct s_hit
+{
+	double		t;
+	void		*object;
+	int			type;
+}	t_hit;
+
+
 // typedef struct s_world
 // {
 // 	t_camera	camera;
@@ -241,7 +249,7 @@ t_camdata		ft_compute_camera(t_camera cam, int width, int height);
 t_ray			ft_ray(t_vec3 o, t_vec3 d);
 
 // ==== object intersection ====
-double	hit_cylinder(t_ray ray, t_cylinder *cy);
+bool	hit_cylinder(t_ray ray, t_cylinder *cy, double *t);
 bool	hit_plane(t_ray ray, t_plane *pl, double *t);
 bool	hit_sphere(t_ray ray, t_sphere *sp, double *t);
 

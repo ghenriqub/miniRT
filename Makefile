@@ -6,7 +6,7 @@
 #    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/12/08 16:45:52 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/12/12 18:55:51 by lgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,8 @@ SRC = $(PARSER_DIR)/0-main.c \
 			$(VECTORS_DIR)/vec3_sub.c \
 		$(RAY_DIR)/cam_data.c \
 			$(RAY_DIR)/ray.c \
-		$(HIT_DIR)/hit_cylinder.c \
+		$(HIT_DIR)/hit_objects.c \
+			$(HIT_DIR)/hit_cylinder.c \
 			$(HIT_DIR)/hit_plane.c \
 			$(HIT_DIR)/hit_sphere.c
 
