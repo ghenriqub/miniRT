@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:46:12 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 22:06:47 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/13 15:11:43 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	ft_is_rt(char *file)
 {
 	size_t	len;
-
+	
 	len = ft_strlen(file);
 	if (ft_strncmp(&file[len - 3], ".rt", 3))
 		return (1);

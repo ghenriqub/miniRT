@@ -6,7 +6,7 @@
 #    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/12/12 18:55:51 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/12/13 15:17:08 by lgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ PARSER_DIR = $(SRC_DIR)/parser
 RAY_DIR = $(SRC_DIR)/ray
 VECTORS_DIR = $(SRC_DIR)/vectors
 HIT_DIR = $(SRC_DIR)/object_intersection
+LIGHT_DIR = $(SRC_DIR)/lighting
 I_DIR = includes
 LIBFT_DIR = libft
 
@@ -58,7 +59,11 @@ SRC = $(PARSER_DIR)/0-main.c \
 		$(HIT_DIR)/hit_objects.c \
 			$(HIT_DIR)/hit_cylinder.c \
 			$(HIT_DIR)/hit_plane.c \
-			$(HIT_DIR)/hit_sphere.c
+			$(HIT_DIR)/hit_sphere.c \
+		$(LIGHT_DIR)/ambient_light.c \
+			$(LIGHT_DIR)/diffuse.c \
+			$(LIGHT_DIR)/shade_hit.c \
+			$(LIGHT_DIR)/support_lighting.c \
 
 #objects
 OBJS = $(SRC:.c=.o)
@@ -69,6 +74,8 @@ GREEN = \033[1;32m
 RED = \033[1;31m
 BLUE = \033[1;34m
 RESET = \033[0m
+
+END = @echo "$(GREEN)Completed$(RESET)"
 
 all: $(LIBFT) $(NAME)
 
