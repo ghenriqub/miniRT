@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   objects.c                                          :+:      :+:    :+:   */
+/*   hit_objects.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:39:35 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/12 18:54:56 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/13 19:09:26 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ bool	hit_objects(t_scene *scene, t_ray ray, t_hit *hit)
 	while (i < scene->object_count)
 	{
 		t_object *obj = scene->objects[i];
-		/* --------- SPHERE --------- */
 		if (obj->type == SPHERE)
 		{
 			if (hit_sphere(ray, (t_sphere *)obj->data, &t))
@@ -38,7 +37,6 @@ bool	hit_objects(t_scene *scene, t_ray ray, t_hit *hit)
 				}
 			}
 		}
-		/* --------- PLANE ---------- */
 		else if (obj->type == PLANE)
 		{
 			if (hit_plane(ray, (t_plane *)obj->data, &t))
@@ -51,7 +49,6 @@ bool	hit_objects(t_scene *scene, t_ray ray, t_hit *hit)
 				}
 			}
 		}
-		/* --------- CYLINDER ------- */
 		else if (obj->type == CYLINDER)
 		{
 			if (hit_cylinder(ray, (t_cylinder *)obj->data, &t))
