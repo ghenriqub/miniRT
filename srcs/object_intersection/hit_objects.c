@@ -25,7 +25,6 @@ bool	hit_objects(t_scene *scene, t_ray ray, t_hit *hit)
 	while (i < scene->object_count)
 	{
 		t_object *obj = scene->objects[i];
-		/* --------- SPHERE --------- */
 		if (obj->type == SPHERE)
 		{
 			if (hit_sphere(ray, (t_sphere *)obj->data, &t))
@@ -38,7 +37,6 @@ bool	hit_objects(t_scene *scene, t_ray ray, t_hit *hit)
 				}
 			}
 		}
-		/* --------- PLANE ---------- */
 		else if (obj->type == PLANE)
 		{
 			if (hit_plane(ray, (t_plane *)obj->data, &t))
@@ -51,7 +49,6 @@ bool	hit_objects(t_scene *scene, t_ray ray, t_hit *hit)
 				}
 			}
 		}
-		/* --------- CYLINDER ------- */
 		else if (obj->type == CYLINDER)
 		{
 			if (hit_cylinder(ray, (t_cylinder *)obj->data, &t))
