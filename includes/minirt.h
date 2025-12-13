@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 19:09:14 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 19:17:49 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,5 +252,14 @@ t_ray			ft_ray(t_vec3 o, t_vec3 d);
 bool	hit_cylinder(t_ray ray, t_cylinder *cy, double *t);
 bool	hit_plane(t_ray ray, t_plane *pl, double *t);
 bool	hit_sphere(t_ray ray, t_sphere *sp, double *t);
+bool	hit_objects(t_scene *scene, t_ray ray, t_hit *hit);
+
+// ==== lighting ====
+t_rgb	apply_ambient(t_scene *sc, t_rgb obj_color);
+bool	is_in_shadow(t_scene *sc, t_vec3 point, t_light *light);
+t_rgb	apply_diffuse(t_vec3 normal, t_vec3 light_dir,
+							t_light *light, t_rgb obj_color);
+t_rgb	rgb_add(t_rgb a, t_rgb b);
+t_rgb	rgb_clamp(t_rgb c);
 
 #endif

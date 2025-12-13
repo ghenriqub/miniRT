@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hit_plane.c                                        :+:      :+:    :+:   */
+/*   ambiente_light.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/08 15:42:52 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 15:09:54 by lgertrud         ###   ########.fr       */
+/*   Created: 2025/12/13 14:50:40 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/12/13 15:14:11 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool	hit_plane(t_ray ray, t_plane *pl, double *t)
+t_rgb	apply_ambient(t_scene *sc, t_rgb obj_color)
 {
-	double	denom;
-	t_vec3	p0l0;
-	double	temp_t;
+	t_rgb	res;
 
-	denom = vec3_dot(pl->normal, ray.direction);
-	if (fabs(denom) < 1e-6)
-		return (false);
-	p0l0 = vec3_sub(pl->point, ray.origin);
-	temp_t = vec3_dot(p0l0, pl->normal) / denom;
-	if (temp_t < 1e-6)
-		return (false);
-	*t = temp_t;
-	return (true);
+	res.r = obj_color.r * sc->ambient->ratio * (sc->ambient->color.r / 255.0);
+	res.g = obj_color.g * sc->ambient->ratio * (sc->ambient->color.g / 255.0);
+	res.b = obj_color.b * sc->ambient->ratio * (sc->ambient->color.b / 255.0);
+	return (res);
 }
