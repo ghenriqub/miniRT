@@ -1,0 +1,17 @@
+#!/bin/sh
+
+DIR="$1"
+
+if [ -z "$DIR" ]; then
+    echo "Informe o diretório."
+    exit 1
+fi
+
+echo "" > log.txt
+
+find "$DIR" -type f -name "*.c" | while read -r file; do
+    echo "===== $file =====" >> log.txt
+    cat "$file" >> log.txt
+    echo "" >> log.txt
+done
+

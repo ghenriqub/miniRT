@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   2-allocate.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/11/21 20:49:06 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:54:32 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	*ft_count(char *file)
 {
 	int		*count;
 	int		fd;
+	char	*raw;
 	char	*line;
 	int		i;
 
@@ -41,19 +42,25 @@ static int	*ft_count(char *file)
 	if (!count)
 		ft_exit(ERROR_MALLOC, 2);
 	fd = ft_get_fd(file);
-	line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
-	while (line)
+	raw = get_next_line(fd);
+	line = NULL;
+	while (raw)
 	{
-		i = 0;
-		ft_tab_to_space(line);
-		while (line[i] == ' ')
-			i++;
-		if (!ft_strncmp(&line[i], "L ", 2))
-			count[0]++;
-		else if (ft_is_object(line))
-			count[1]++;
-		free(line);
-		line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
+		line = ft_strtrim(raw, " \t\r\b\n");
+		free(raw);
+		if (line)
+		{
+			i = 0;
+			ft_tab_to_space(line);
+			while (line[i] == ' ')
+				i++;
+			if (!ft_strncmp(&line[i], "L ", 2))
+				count[0]++;
+			else if (ft_is_object(line))
+				count[1]++;
+			free(line);
+		}
+		raw = get_next_line(fd);
 	}
 	close(fd);
 	return (count);
@@ -116,6 +123,8 @@ t_args	*ft_allocate_args(char *file)
 
 	count = ft_count(file);
 	args = ft_calloc(sizeof(t_args), 1);
+	if (!args)
+		ft_exit(ERROR_MALLOC, 2);
 	args->camera = NULL;
 	args->light_count = count[0];
 	args->obj_count = count[1];

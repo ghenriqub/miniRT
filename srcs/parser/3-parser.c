@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   3-parser.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/02 15:35:39 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/13 21:23:52 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,25 +93,33 @@ t_light	**ft_parser_l(char **input, int count_light)
 	char	**args;
 	int		i;
 
+	if (!input || count_light <= 0)
+		return (NULL);
 	light = (t_light **)ft_alloc_arraystruc(count_light, sizeof(t_light));
 	if (!light)
 		return (NULL);
-	i = -1;
-	while (input[++i])
+	i = 0;
+	while (i < count_light)
 	{
+		if (!input[i]) 
+			break;
 		if (count_parts(input[i], ' ') != 4)
 			return (ft_free_arraystruc((void **)light, count_light), NULL);
 		args = ft_split(input[i], ' ');
-		if (ft_strncmp(args[0], "L", ft_strlen(args[0])) != 0
+		if (!args || !args[0] || !args[1] || !args[2] || !args[3] || 
+			ft_strncmp(args[0], "L", ft_strlen(args[0])) != 0
 			|| !ft_parser_vec3(args[1])
 			|| !ft_parser_ratio(args[2], 0, 1)
 			|| !ft_parser_rgb(args[3]))
-			return (ft_free_arraystruc((void **)light, count_light),
-				ft_free_split(args), NULL);
+		{
+			ft_free_split(args);
+			return (ft_free_arraystruc((void **)light, count_light), NULL);
+		}
 		light[i]->position = ft_get_vec3(args[1]);
 		light[i]->ratio = ft_atod(args[2]);
 		light[i]->color = ft_get_rgb(args[3]);
 		ft_free_split(args);
+		i++;
 	}
 	return (light);
 }
@@ -121,18 +129,23 @@ t_object	**ft_parser_ob(char **input, int count_objects)
 	t_object	**objects;
 	int			i;
 
+	if (!input || count_objects <= 0)
+		return (NULL);
 	objects = (t_object **)ft_alloc_arraystruc(count_objects, sizeof(t_object));
 	if (!objects)
 		return (NULL);
-	i = -1;
-	while (++i < count_objects)
+	i = 0;
+	while (i < count_objects)
 	{
+		if (!input[i]) 
+			break;
 		objects[i]->type = ft_get_type(input[i]);
 		if (objects[i]->type == INVALID)
 			return (ft_free_objects_struc(objects, count_objects), NULL);
 		objects[i]->data = ft_get_obj(objects[i]->type, input[i]);
 		if (objects[i]->data == NULL)
 			return (ft_free_objects_struc(objects, count_objects), NULL);
+		i++;
 	}
 	return (objects);
 }

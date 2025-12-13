@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   3.1-parser_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:20:22 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/02 15:37:26 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/13 21:25:21 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,21 @@ int	ft_parser_vec3(char *str)
 {
 	char	**p;
 
+	if (!str)
+		return (0);
 	p = ft_split(str, ',');
-	if (!p || count_parts(str, ',') != 3)
-		return (ft_free_split(p), 0);
+	if (!p || count_parts(str, ',') != 3 || !p[0] || !p[1] || !p[2])
+	{
+		ft_free_split(p);
+		return (0);
+	}
 	if (!ft_float_format(p[0])
 		|| !ft_float_format(p[1])
 		|| !ft_float_format(p[2]))
-		return (ft_free_split(p), 0);
+	{
+		ft_free_split(p);
+		return (0);
+	}
 	ft_free_split(p);
 	return (1);
 }
@@ -89,10 +97,15 @@ int	ft_parser_vec3(char *str)
 int	ft_is_normalized(char *str)
 {
 	char	**args;
+	double	x;
+	double	y;
+	double	z;
 
 	if (!ft_parser_vec3(str))
 		return (0);
 	args = ft_split(str, ',');
+	if (!args)
+		return (0);
 	if (!ft_parser_ratio(args[0], -1, 1)
 		|| !ft_parser_ratio(args[1], -1, 1)
 		|| !ft_parser_ratio(args[2], -1, 1))
@@ -100,6 +113,11 @@ int	ft_is_normalized(char *str)
 		ft_free_split(args);
 		return (0);
 	}
+	x = ft_atod(args[0]);
+	y = ft_atod(args[1]);
+	z = ft_atod(args[2]);
 	ft_free_split(args);
+	if (x == 0.0 && y == 0.0 && z == 0.0)
+		return (0);
 	return (1);
 }

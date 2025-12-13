@@ -3,22 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   support_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:46:12 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 15:11:43 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/13 21:16:37 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// this function verified if argument is .rt
 int	ft_is_rt(char *file)
 {
 	size_t	len;
-	
+
+	if (!file)
+		return (1);
 	len = ft_strlen(file);
-	if (ft_strncmp(&file[len - 3], ".rt", 3))
+	if (len < 3)
+		return (1);
+	if (ft_strncmp(file + len - 3, ".rt", 3) != 0)
 		return (1);
 	return (0);
 }
