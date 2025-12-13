@@ -6,10 +6,10 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:01:14 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/13 19:01:28 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 19:09:12 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_ve3
+t_ve3	get_normal()

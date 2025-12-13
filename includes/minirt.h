@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 18:51:05 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 19:09:14 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ typedef struct s_hit
 
 // ============ Parser ============
 
-void			ft_exit(char *message, int code); // falta??
+void			ft_exit(char *message, int code);
 int				ft_is_rt(char *file);
 t_scene			*ft_get_scene(char *file);
 int				ft_get_fd(char *file);
