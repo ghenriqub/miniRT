@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   support_lighting.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 14:55:04 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 15:00:07 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/13 19:48:38 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,22 @@ t_rgb	rgb_clamp(t_rgb c)
 	if (c.b < 0)
 		c.b = 0;
 	return (c);
+}
+
+int	rgb_to_int(t_rgb color)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	r = (int)color.r;
+	g = (int)color.g;
+	b = (int)color.b;
+	if (r < 0) r = 0;
+	if (r > 255) r = 255;
+	if (g < 0) g = 0;
+	if (g > 255) g = 255;
+	if (b < 0) b = 0;
+	if (b > 255) b = 255;
+	return (r << 16 | g << 8 | b);
 }

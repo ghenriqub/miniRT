@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
+#    By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/12/13 15:17:08 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/12/13 19:52:50 by ghenriqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,10 @@ RAY_DIR = $(SRC_DIR)/ray
 VECTORS_DIR = $(SRC_DIR)/vectors
 HIT_DIR = $(SRC_DIR)/object_intersection
 LIGHT_DIR = $(SRC_DIR)/lighting
+RENDER_DIR = $(SRC_DIR)/render
+GRAPHICS_DIR = $(SRC_DIR)/graphics
 I_DIR = includes
-LIBFT_DIR = libft
+LIBFT_DIR = libft\
 
 #includes
 INCLUDES = -I$(I_DIR) -I$(LIBFT_DIR)
@@ -64,6 +66,10 @@ SRC = $(PARSER_DIR)/0-main.c \
 			$(LIGHT_DIR)/diffuse.c \
 			$(LIGHT_DIR)/shade_hit.c \
 			$(LIGHT_DIR)/support_lighting.c \
+		$(RENDER_DIR)/render.c \
+			$(RENDER_DIR)/normal.c \
+		$(GRAPHICS_DIR)/events.c \
+			$(GRAPHICS_DIR)/minilibx_setup.c
 
 #objects
 OBJS = $(SRC:.c=.o)

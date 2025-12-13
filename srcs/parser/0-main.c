@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 19:09:15 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 19:52:56 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,11 @@ int	main(int argc, char **argv)
 		ft_exit(ERROR_PARAM, 1);
 	scene = ft_get_scene(argv[1]);
 	// ft_init_viewport(scene); aqui precisa inicializar a parte de left up right randerer ray.c
-	//ft_init_graphics(scene);
+	ft_init_graphics(scene);
+	render_scene(scene);
+	mlx_key_hook(scene->disp.win, key_press, scene);
+	mlx_hook(scene->disp.win, 17, 0, close_window, scene);
+	mlx_loop(scene->disp.mlx);
 	//ft_print_scene(scene);
 	ft_free_scene(scene);
 	return (0);
