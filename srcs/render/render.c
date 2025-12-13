@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 18:48:20 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/13 19:48:27 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:05:19 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void    render_scene(t_scene *scene)
     t_vec3  normal;
 
     y = 0;
-    while (x < HEIGHT)
+    while (y < HEIGHT)
     {
         x = 0;
         while (x < WIDTH)

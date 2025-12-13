@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 19:52:56 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:08:48 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,7 @@ int	main(int argc, char **argv)
 	mlx_key_hook(scene->disp.win, key_press, scene);
 	mlx_hook(scene->disp.win, 17, 0, close_window, scene);
 	mlx_loop(scene->disp.mlx);
-	//ft_print_scene(scene);
-	ft_free_scene(scene);
+	// ft_free_scene(scene);
 	return (0);
 }
 

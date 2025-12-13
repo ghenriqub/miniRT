@@ -5,107 +5,161 @@
 #                                                     +:+ +:+         +:+      #
 #    By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/06 16:42:34 by lgertrud          #+#    #+#              #
-#    Updated: 2025/12/13 19:52:50 by ghenriqu         ###   ########.fr        #
+#    Created: 2025/12/13 20:39:24 by ghenriqu          #+#    #+#              #
+#    Updated: 2025/12/13 20:39:41 by ghenriqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = miniRT
+# ============================================================================ #
+#                               PROJECT NAME                                   #
+# ============================================================================ #
 
-#compiler and flags
-CC = cc
-FLAGS = -Wall -Wextra -Werror
-LDFLAG = -lm
+NAME        = miniRT
 
-#directories
-SRC_DIR = srcs
-PARSER_DIR = $(SRC_DIR)/parser
-RAY_DIR = $(SRC_DIR)/ray
-VECTORS_DIR = $(SRC_DIR)/vectors
-HIT_DIR = $(SRC_DIR)/object_intersection
-LIGHT_DIR = $(SRC_DIR)/lighting
-RENDER_DIR = $(SRC_DIR)/render
-GRAPHICS_DIR = $(SRC_DIR)/graphics
-I_DIR = includes
-LIBFT_DIR = libft\
+# ============================================================================ #
+#                            COMPILER & FLAGS                                  #
+# ============================================================================ #
 
-#includes
-INCLUDES = -I$(I_DIR) -I$(LIBFT_DIR)
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror
+LDFLAGS     = -lm
 
-#libraries
-LIBFT = $(LIBFT_DIR)/libft.a
+# ============================================================================ #
+#                               MINILIBX                                       #
+# ============================================================================ #
 
-#sources
-SRC = $(PARSER_DIR)/0-main.c \
-			$(PARSER_DIR)/1-get_scene.c \
-			$(PARSER_DIR)/2-allocate.c \
-			$(PARSER_DIR)/3-parser.c \
-			$(PARSER_DIR)/3.1-parser_utils.c \
-			$(PARSER_DIR)/3.2-parser_utils.c \
-			$(PARSER_DIR)/3.3-parser_utils.c \
-			$(PARSER_DIR)/3.4-parser_obj_utils.c \
-			$(PARSER_DIR)/support_functions.c \
-			$(PARSER_DIR)/support_functions1.c \
-		$(VECTORS_DIR)/vec3_add.c \
-			$(VECTORS_DIR)/vec3_atovec3.c \
-			$(VECTORS_DIR)/vec3_cmp.c \
-			$(VECTORS_DIR)/vec3_cross.c \
-			$(VECTORS_DIR)/vec3_dot.c \
-			$(VECTORS_DIR)/vec3_len.c \
-			$(VECTORS_DIR)/vec3_new.c \
-			$(VECTORS_DIR)/vec3_normalize.c \
-			$(VECTORS_DIR)/vec3_scale.c \
-			$(VECTORS_DIR)/vec3_sub.c \
-		$(RAY_DIR)/cam_data.c \
-			$(RAY_DIR)/ray.c \
-		$(HIT_DIR)/hit_objects.c \
-			$(HIT_DIR)/hit_cylinder.c \
-			$(HIT_DIR)/hit_plane.c \
-			$(HIT_DIR)/hit_sphere.c \
-		$(LIGHT_DIR)/ambient_light.c \
-			$(LIGHT_DIR)/diffuse.c \
-			$(LIGHT_DIR)/shade_hit.c \
-			$(LIGHT_DIR)/support_lighting.c \
-		$(RENDER_DIR)/render.c \
-			$(RENDER_DIR)/normal.c \
-		$(GRAPHICS_DIR)/events.c \
-			$(GRAPHICS_DIR)/minilibx_setup.c
+MLX_DIR     = minilibx-linux
+MLX         = $(MLX_DIR)/libmlx.a
+MLX_FLAGS   = -L$(MLX_DIR) -lmlx_Linux -lX11 -lXext
 
-#objects
-OBJS = $(SRC:.c=.o)
+# ============================================================================ #
+#                              DIRECTORIES                                     #
+# ============================================================================ #
 
-# Colors
-YELLOW = \e[93m
-GREEN = \033[1;32m
-RED = \033[1;31m
-BLUE = \033[1;34m
-RESET = \033[0m
+SRC_DIR     = srcs
+I_DIR       = includes
+LIBFT_DIR   = libft
 
-END = @echo "$(GREEN)Completed$(RESET)"
+# ============================================================================ #
+#                               INCLUDES                                       #
+# ============================================================================ #
 
-all: $(LIBFT) $(NAME)
+INCLUDES    = -I$(I_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
+# ============================================================================ #
+#                               LIBRARIES                                      #
+# ============================================================================ #
+
+LIBFT       = $(LIBFT_DIR)/libft.a
+
+# ============================================================================ #
+#                               SOURCES                                        #
+# ============================================================================ #
+
+SRC         = $(SRC_DIR)/parser/0-main.c \
+              $(SRC_DIR)/parser/1-get_scene.c \
+              $(SRC_DIR)/parser/2-allocate.c \
+              $(SRC_DIR)/parser/3-parser.c \
+              $(SRC_DIR)/parser/3.1-parser_utils.c \
+              $(SRC_DIR)/parser/3.2-parser_utils.c \
+              $(SRC_DIR)/parser/3.3-parser_utils.c \
+              $(SRC_DIR)/parser/3.4-parser_obj_utils.c \
+              $(SRC_DIR)/parser/support_functions.c \
+              $(SRC_DIR)/parser/support_functions1.c \
+              $(SRC_DIR)/vectors/vec3_add.c \
+              $(SRC_DIR)/vectors/vec3_atovec3.c \
+              $(SRC_DIR)/vectors/vec3_cmp.c \
+              $(SRC_DIR)/vectors/vec3_cross.c \
+              $(SRC_DIR)/vectors/vec3_cos.c \
+              $(SRC_DIR)/vectors/vec3_dot.c \
+              $(SRC_DIR)/vectors/vec3_len.c \
+              $(SRC_DIR)/vectors/vec3_new.c \
+              $(SRC_DIR)/vectors/vec3_normalize.c \
+              $(SRC_DIR)/vectors/vec3_scale.c \
+              $(SRC_DIR)/vectors/vec3_sub.c \
+              $(SRC_DIR)/ray/cam_data.c \
+              $(SRC_DIR)/ray/ray.c \
+              $(SRC_DIR)/object_intersection/hit_objects.c \
+              $(SRC_DIR)/object_intersection/hit_cylinder.c \
+              $(SRC_DIR)/object_intersection/hit_plane.c \
+              $(SRC_DIR)/object_intersection/hit_sphere.c \
+              $(SRC_DIR)/lighting/ambient_light.c \
+              $(SRC_DIR)/lighting/diffuse.c \
+              $(SRC_DIR)/lighting/shade_hit.c \
+              $(SRC_DIR)/lighting/support_lighting.c \
+              $(SRC_DIR)/render/render.c \
+              $(SRC_DIR)/render/normal.c \
+              $(SRC_DIR)/graphics/events.c \
+              $(SRC_DIR)/graphics/minilibx_setup.c
+
+# ============================================================================ #
+#                               OBJECTS                                        #
+# ============================================================================ #
+
+OBJS        = $(SRC:.c=.o)
+
+# ============================================================================ #
+#                               COLORS                                         #
+# ============================================================================ #
+
+RESET       = \033[0m
+BOLD        = \033[1m
+GREEN       = \033[32m
+YELLOW      = \033[33m
+CYAN        = \033[36m
+RED         = \033[31m
+
+# ============================================================================ #
+#                               RULES                                          #
+# ============================================================================ #
+
+.PHONY: all clean fclean re
+
+all: $(NAME)
+
+# Compile libft
 $(LIBFT):
-	$(INTRO)
-	@echo "$(YELLOW)[LOADING...]$(RESET)"
+	@echo "$(CYAN)$(BOLD)[LIBFT]$(RESET) Compiling libft..."
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
+	@echo "$(GREEN)✓ libft compiled$(RESET)"
 
-$(NAME): $(OBJS)
-	$(END)
-	@$(CC) $(FLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(LDFLAG) -o $(NAME)
+# Compile MLX (only if needed)
+$(MLX):
+	@if [ ! -f $(MLX) ]; then \
+		echo "$(CYAN)$(BOLD)[MLX]$(RESET) Compiling MiniLibX..."; \
+		$(MAKE) --no-print-directory -C $(MLX_DIR) 2>&1 | grep -v "warning:" || true; \
+		echo "$(GREEN)✓ MiniLibX compiled$(RESET)"; \
+	fi
 
+# Compile object files
 %.o: %.c
-	@echo "$(YELLOW)[.o]$(RESET)Compiling $<..."
-	@$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
+	@echo "$(YELLOW)[CC]$(RESET) $<"
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# Link final executable
+$(NAME): $(LIBFT) $(MLX) $(OBJS)
+	@echo "$(CYAN)$(BOLD)[LINK]$(RESET) Linking $(NAME)..."
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) $(LDFLAGS) -o $(NAME)
+	@echo "$(GREEN)$(BOLD)✓✓✓ $(NAME) ready! ✓✓✓$(RESET)"
+
+# Clean object files
 clean:
 	@echo "$(RED)[CLEAN]$(RESET) Removing object files..."
-	@rm -f $(OBJS) $(OBJSB)
+	@rm -f $(OBJS)
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
+	@echo "$(GREEN)✓ Clean complete$(RESET)"
 
-fclean:
-	@echo "$(RED)[FCLEAN]$(RESET) Removing all generated files..."
-	@rm -f $(NAME) $(NAME_BONUS) $(OBJS) $(OBJSB)
+# Full clean
+fclean: clean
+	@echo "$(RED)[FCLEAN]$(RESET) Removing executables..."
+	@rm -f $(NAME)
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
+	@$(MAKE) --no-print-directory -C $(MLX_DIR) clean 2>/dev/null || true
+	@echo "$(GREEN)✓ Full clean complete$(RESET)"
 
+# Rebuild everything
 re: fclean all
+
+# ============================================================================ #
+#                            END OF MAKEFILE                                   #
+# ============================================================================ #

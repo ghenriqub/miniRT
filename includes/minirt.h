@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 19:50:44 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:41:43 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 # include "libft.h"
 # include <stdbool.h>
 # include <math.h>
+# include "../minilibx-linux/mlx.h"
 
 # define M_PI	3.14159265358979323846
 # define ERROR_PARAM "Error\nUsage: ./minirt <file.rt>"
 # define ERROR_FILE "Error\nCannot open this found."
 # define ERROR_MALLOC "Error\nCannot allocate memmory."
 # define ERROR_SCENE "Error\ninvalid scene."
-# define WIDTH 800
-# define HEIGHT 1400
+# define WIDTH 1400
+# define HEIGHT 800
 
 typedef struct s_vec3
 {
@@ -224,6 +225,7 @@ int				ft_parse_fov(char *str);
 void			**ft_alloc_arraystruc(int count, size_t type_size);
 void			ft_free_arraystruc(void **arr, int count);
 void			ft_free_scene(t_scene *scene);
+void			ft_free_object(t_object *obj);
 void			ft_free_split(char **arr);
 void			*ft_get_obj(t_obj_type type, char *line);
 t_obj_type		ft_get_type(char *line);
@@ -272,8 +274,9 @@ t_vec3			get_normal(t_hit *hit, t_vec3 point);
 void			put_pixel(t_scene *scene, int x, int y, int color);
 void  			render_scene(t_scene *scene);
 
-// ==== events ====
+// ==== graphics ====
 int				key_press(int keycode, t_scene *scene);
 int				close_window(t_scene *scene);
+void			ft_init_graphics(t_scene *scene);
 
 #endif

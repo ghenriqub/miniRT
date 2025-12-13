@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:01:14 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/13 19:48:35 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:15:32 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,22 @@ static t_vec3	get_cylinder_normal(t_hit *hit, t_vec3 point)
 t_vec3	get_normal(t_hit *hit, t_vec3 point)
 {
 	t_vec3	normal;
+	t_sphere	*sp;
+	t_plane		*pl;
 
 	if (hit->type == SPHERE)
 	{
-		t_sphere *sp = (t_sphere *)hit->object;
+		sp = (t_sphere *)hit->object;
 		normal = vec3_normalize(vec3_sub(point, sp->center));
 	}
 	else if (hit->type == PLANE)
 	{
-		t_plane *pl = (t_plane *)hit->object;
+		pl = (t_plane *)hit->object;
 		normal = vec3_normalize(pl->normal);
 	}
 	else if (hit->type == CYLINDER)
-	{
 		normal = get_cylinder_normal(hit, point);
-	}
 	else
 		normal = vec3_new(0, 1, 0);
-	
 	return (normal);
 }

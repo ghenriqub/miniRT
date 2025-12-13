@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cam_data.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 16:42:02 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/06 16:18:43 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:22:29 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ t_camdata	ft_compute_camera(t_camera cam, int width, int height)
 
 	world_up = ft_get_vec3("0,1,0");
 	c.forward = vec3_normalize(cam.vector);
+	if (fabs(vec3_dot(c.forward, world_up)) > 0.999)
+		world_up = ft_get_vec3("0,0,1");
 	c.right = vec3_normalize(vec3_cross(c.forward, world_up));
 	c.up = vec3_cross(c.right, c.forward);
 	c.fov_rad = cam.fov * M_PI / 180.0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   support_functions1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 16:13:14 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 15:09:26 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:34:14 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ void	ft_free_scene(t_scene *scene)
 	free(scene->camera);
 	if (scene->lights)
 	{
-		i = -1;
-		while (scene->lights[++i])
+		i = 0;
+		while (i < scene->light_count)
+		{
 			free(scene->lights[i]);
+			i++;
+		}
 		free(scene->lights);
 	}
 	if (scene->objects)
@@ -48,7 +51,7 @@ void	ft_free_scene(t_scene *scene)
 	free(scene);
 }
 
-void	ft_free_objectt(t_object *obj)
+void	ft_free_object(t_object *obj)
 {
 	if (!obj)
 		return ;
@@ -73,7 +76,7 @@ void	ft_free_objects_struc(t_object **arr, int count)
 	i = 0;
 	while (i < count)
 	{
-		ft_free_objectt(arr[i]);
+		ft_free_object(arr[i]);
 		i++;
 	}
 	free(arr);
