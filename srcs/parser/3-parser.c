@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 14:04:25 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:48:27 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,13 @@ t_light	**ft_parser_l(char **input, int count_light)
 	i = 0;
 	while (i < count_light)
 	{
-		if (!input[i]) 
-			break;
+		if (!input[i])
+			break ;
 		if (count_parts(input[i], ' ') != 4)
 			return (ft_free_arraystruc((void **)light, count_light), NULL);
 		args = ft_split(input[i], ' ');
-		if (!args || !args[0] || !args[1] || !args[2] || !args[3] || 
-			ft_strncmp(args[0], "L", ft_strlen(args[0])) != 0
+		if (!args || !args[0] || !args[1] || !args[2] || !args[3]
+			|| ft_strncmp(args[0], "L", ft_strlen(args[0])) != 0
 			|| !ft_parser_vec3(args[1])
 			|| !ft_parser_ratio(args[2], 0, 1)
 			|| !ft_parser_rgb(args[3]))
@@ -135,8 +135,8 @@ t_object	**ft_parser_ob(char **input, int count_objects)
 	i = 0;
 	while (i < count_objects)
 	{
-		if (!input[i]) 
-			break;
+		if (!input[i])
+			break ;
 		objects[i]->type = ft_get_type(input[i]);
 		if (objects[i]->type == INVALID)
 			return (ft_free_objects_struc(objects, count_objects), NULL);

@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 14:55:04 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 19:48:38 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:57:36 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,17 @@ int	rgb_to_int(t_rgb color)
 	r = (int)color.r;
 	g = (int)color.g;
 	b = (int)color.b;
-	if (r < 0) r = 0;
-	if (r > 255) r = 255;
-	if (g < 0) g = 0;
-	if (g > 255) g = 255;
-	if (b < 0) b = 0;
-	if (b > 255) b = 255;
+	if (r < 0)
+		r = 0;
+	if (r > 255)
+		r = 255;
+	if (g < 0)
+		g = 0;
+	if (g > 255)
+		g = 255;
+	if (b < 0)
+		b = 0;
+	if (b > 255)
+		b = 255;
 	return (r << 16 | g << 8 | b);
 }

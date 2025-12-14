@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hit_cylinder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 15:45:05 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/12 19:02:37 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:57:39 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ bool	hit_cylinder(t_ray ray, t_cylinder *cy, double *t)
 		hit = true;
 	if (!hit)
 		return (false);
-	/* escolher menor t válido */
 	*t = t_lateral;
 	if (t_top < *t && t_top > EPSILON)
 		*t = t_top;
@@ -48,7 +47,8 @@ bool	hit_cylinder(t_ray ray, t_cylinder *cy, double *t)
 
 /*
  * caps: top == 1 -> top cap ; top == 0 -> bottom cap
- * assume cy->center is the base (bottom). top center = center + normal*height
+ * assume cy->center is the base (bottom).
+ * top center = center + normal*height
  */
 static bool	cy_cap(t_ray ray, t_cylinder *cy, double *out, int top)
 {
@@ -61,10 +61,9 @@ static bool	cy_cap(t_ray ray, t_cylinder *cy, double *out, int top)
 		center = vec3_add(cy->center, vec3_scale(cy->normal, cy->height));
 	else
 		center = cy->center;
-	/* montar plane temporário (precisa de color) */
 	pl.point = center;
 	pl.normal = cy->normal;
-	pl.color = (t_rgb){0, 0, 0}; /* color não usado por hit_plane, só para inicializar */
+	pl.color = (t_rgb){0, 0, 0};
 	if (!hit_plane(ray, &pl, &t))
 		return (false);
 	if (t < EPSILON)
@@ -78,6 +77,7 @@ static bool	cy_cap(t_ray ray, t_cylinder *cy, double *out, int top)
 	return (false);
 }
 
+// a = 
 static bool	cy_lateral(t_ray ray, t_cylinder *cy, double *out)
 {
 	t_vec3	oc;
@@ -93,7 +93,6 @@ static bool	cy_lateral(t_ray ray, t_cylinder *cy, double *out)
 	double	h;
 
 	oc = vec3_sub(ray.origin, cy->center);
-	/* remove componente paralela ao eixo */
 	d = vec3_sub(ray.direction,
 			vec3_scale(cy->normal, vec3_dot(ray.direction, cy->normal)));
 	w = vec3_sub(oc, vec3_scale(cy->normal, vec3_dot(oc, cy->normal)));
@@ -105,7 +104,6 @@ static bool	cy_lateral(t_ray ray, t_cylinder *cy, double *out)
 		return (false);
 	t1 = (-b - sqrt(discriminant)) / (2 * a);
 	t2 = (-b + sqrt(discriminant)) / (2 * a);
-	/* testa t1 */
 	if (t1 > EPSILON)
 	{
 		p = vec3_add(ray.origin, vec3_scale(ray.direction, t1));
@@ -116,7 +114,6 @@ static bool	cy_lateral(t_ray ray, t_cylinder *cy, double *out)
 			return (true);
 		}
 	}
-	/* testa t2 */
 	if (t2 > EPSILON)
 	{
 		p = vec3_add(ray.origin, vec3_scale(ray.direction, t2));
