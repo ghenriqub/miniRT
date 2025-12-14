@@ -6,56 +6,32 @@
 #    By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/13 20:39:24 by ghenriqu          #+#    #+#              #
-#    Updated: 2025/12/13 21:16:43 by ghenriqu         ###   ########.fr        #
+#    Updated: 2025/12/14 15:18:52 by ghenriqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# ============================================================================ #
-#                               PROJECT NAME                                   #
-# ============================================================================ #
-
 NAME        = miniRT
 
-# ============================================================================ #
-#                            COMPILER & FLAGS                                  #
-# ============================================================================ #
-
+# Compiler
 CC          = cc
 CFLAGS      = -Wall -Wextra -Werror
 LDFLAGS     = -lm
 
-# ============================================================================ #
-#                               MINILIBX                                       #
-# ============================================================================ #
-
-MLX_DIR     = minilibx-linux
-MLX         = $(MLX_DIR)/libmlx.a
-MLX_FLAGS   = -L$(MLX_DIR) -lmlx_Linux -lX11 -lXext
-
-# ============================================================================ #
-#                              DIRECTORIES                                     #
-# ============================================================================ #
-
+# Directories
 SRC_DIR     = srcs
 I_DIR       = includes
 LIBFT_DIR   = libft
+MLX_DIR     = minilibx-linux
 
-# ============================================================================ #
-#                               INCLUDES                                       #
-# ============================================================================ #
+# Libraries
+LIBFT       = $(LIBFT_DIR)/libft.a
+MLX         = $(MLX_DIR)/libmlx.a
+MLX_FLAGS   = -L$(MLX_DIR) -lmlx_Linux -lX11 -lXext
 
+# Includes
 INCLUDES    = -I$(I_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-# ============================================================================ #
-#                               LIBRARIES                                      #
-# ============================================================================ #
-
-LIBFT       = $(LIBFT_DIR)/libft.a
-
-# ============================================================================ #
-#                               SOURCES                                        #
-# ============================================================================ #
-
+# Sources
 SRC         = $(SRC_DIR)/parser/0-main.c \
               $(SRC_DIR)/parser/1-get_scene.c \
               $(SRC_DIR)/parser/2-allocate.c \
@@ -92,74 +68,44 @@ SRC         = $(SRC_DIR)/parser/0-main.c \
               $(SRC_DIR)/graphics/events.c \
               $(SRC_DIR)/graphics/minilibx_setup.c
 
-# ============================================================================ #
-#                               OBJECTS                                        #
-# ============================================================================ #
-
 OBJS        = $(SRC:.c=.o)
 
-# ============================================================================ #
-#                               COLORS                                         #
-# ============================================================================ #
-
-RESET       = \033[0m
-BOLD        = \033[1m
+# Colors
 GREEN       = \033[32m
 YELLOW      = \033[33m
-CYAN        = \033[36m
 RED         = \033[31m
+RESET       = \033[0m
 
-# ============================================================================ #
-#                               RULES                                          #
-# ============================================================================ #
-
+# Rules
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
-# Compile libft
 $(LIBFT):
-	@echo "$(CYAN)$(BOLD)[LIBFT]$(RESET) Compiling libft..."
-	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
-	@echo "$(GREEN)✓ libft compiled$(RESET)"
+	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
-# Compile MLX (only if needed)
 $(MLX):
-	@if [ ! -f $(MLX) ]; then \
-		echo "$(CYAN)$(BOLD)[MLX]$(RESET) Compiling MiniLibX..."; \
-		$(MAKE) --no-print-directory -C $(MLX_DIR) 2>&1 | grep -v "warning:" || true; \
-		echo "$(GREEN)✓ MiniLibX compiled$(RESET)"; \
-	fi
+	@echo "$(YELLOW)Compiled: $(RESET) $(MLX_DIR) $<"
+	@$(MAKE) -s -C $(MLX_DIR) --no-print-directory > /dev/null 2>&1 || true
+	@echo "$(GREEN)✓ MLX ready!$(RESET)"
 
-# Compile object files
 %.o: %.c
-	@echo "$(YELLOW)[CC]$(RESET) $<"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@echo "$(YELLOW)Compiled:$(RESET) $<"
 
-# Link final executable
 $(NAME): $(LIBFT) $(MLX) $(OBJS)
-	@echo "$(CYAN)$(BOLD)[LINK]$(RESET) Linking $(NAME)..."
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) $(LDFLAGS) -o $(NAME)
-	@echo "$(GREEN)$(BOLD)✓✓✓ $(NAME) ready! ✓✓✓$(RESET)"
+	@echo "$(GREEN)✓ $(NAME) ready!$(RESET)"
 
-# Clean object files
 clean:
-	@echo "$(RED)[CLEAN]$(RESET) Removing object files..."
 	@rm -f $(OBJS)
-	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
-	@echo "$(GREEN)✓ Clean complete$(RESET)"
+	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
+	@echo "$(RED)Cleaned object files$(RESET)"
 
-# Full clean
 fclean: clean
-	@echo "$(RED)[FCLEAN]$(RESET) Removing executables..."
 	@rm -f $(NAME)
-	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
-	@$(MAKE) --no-print-directory -C $(MLX_DIR) clean 2>/dev/null || true
-	@echo "$(GREEN)✓ Full clean complete$(RESET)"
+	@$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
+	@$(MAKE) -C $(MLX_DIR) clean --no-print-directory 2>/dev/null || true
+	@echo "$(RED)Cleaned executables$(RESET)"
 
-# Rebuild everything
 re: fclean all
-
-# ============================================================================ #
-#                            END OF MAKEFILE                                   #
-# ============================================================================ #
