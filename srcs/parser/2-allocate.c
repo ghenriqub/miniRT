@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 14:04:30 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:40:40 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static int	*ft_count(char *file)
 			count[0]++;
 		else if (ft_is_object(trimmed))
 			count[1]++;
-		
 		free(trimmed);
 		line = get_next_line(fd);
 	}
@@ -97,7 +96,6 @@ void	ft_put_argument(t_args *args, int fd)
 	{
 		trimmed = ft_strtrim(line, " \t\r\b\n");
 		ft_tab_to_space(trimmed);
-		
 		if (!ft_strncmp(trimmed, "A ", 2))
 			args->ambient_light = ft_is_double(args,
 					args->ambient_light, trimmed, fd);
@@ -109,7 +107,6 @@ void	ft_put_argument(t_args *args, int fd)
 			args->objects[i++] = ft_strdup(trimmed);
 		else if (trimmed[0] != '\n' && trimmed[0] != '#' && trimmed[0] != '\0')
 			ft_is_double(args, "invalid", trimmed, fd);
-		
 		free(trimmed);
 		free(line);
 		line = get_next_line(fd);
