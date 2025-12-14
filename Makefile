@@ -6,7 +6,7 @@
 #    By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/13 20:39:24 by ghenriqu          #+#    #+#              #
-#    Updated: 2025/12/14 15:18:52 by ghenriqu         ###   ########.fr        #
+#    Updated: 2025/12/14 15:20:38 by ghenriqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,7 +85,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 $(MLX):
-	@echo "$(YELLOW)Compiled: $(RESET) $(MLX_DIR) $<"
+	@echo "$(YELLOW)Compiled:$(RESET) $(MLX_DIR) $<"
 	@$(MAKE) -s -C $(MLX_DIR) --no-print-directory > /dev/null 2>&1 || true
 	@echo "$(GREEN)✓ MLX ready!$(RESET)"
 
