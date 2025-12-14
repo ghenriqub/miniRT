@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 20:40:08 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 13:23:32 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 13:51:03 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,5 @@ char	*ft_strtrim(char *s, char *set)
 	while (start < end)
 		res[i++] = s[start++];
 	res[i] = '\0';
-	if (s)
-		free(s);
 	return (res);
 }

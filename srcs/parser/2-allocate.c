@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 13:29:28 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:04:30 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ static int	*ft_count(char *file)
 	while (line)
 	{
 		trimmed = ft_strtrim(line, " \t\r\b\n");
+		free(line);
+		if (!trimmed)
+			break ;
 		ft_tab_to_space(trimmed);
 		i = 0;
 		while (trimmed[i] == ' ')
@@ -56,7 +59,6 @@ static int	*ft_count(char *file)
 			count[1]++;
 		
 		free(trimmed);
-		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);

@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 21:23:52 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:04:25 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ t_light	**ft_parser_l(char **input, int count_light)
 	char	**args;
 	int		i;
 
-	if (!input || count_light <= 0)
-		return (NULL);
 	light = (t_light **)ft_alloc_arraystruc(count_light, sizeof(t_light));
 	if (!light)
 		return (NULL);

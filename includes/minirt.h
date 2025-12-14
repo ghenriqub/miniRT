@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 21:16:39 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:23:27 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdbool.h>
 # include <math.h>
 # include "../minilibx-linux/mlx.h"
+# include "../X11/X.h"
+# include "../X11/keysym.h"
 
 # define M_PI	3.14159265358979323846
 # define ERROR_PARAM "Error\nUsage: ./minirt <file.rt>"
@@ -25,6 +27,19 @@
 # define ERROR_SCENE "Error\ninvalid scene."
 # define WIDTH 1400
 # define HEIGHT 800
+
+# define KEYPRESS        2
+# define KEYRELEASE      3
+# define BUTTONPRESS     4
+# define BUTTONRELEASE   5
+# define MOTIONNOTIFY    6
+# define DESTROYNOTIFY   17
+# define EXPOSE          12
+
+# define KEYPRESSMASK    (1L<<0)
+# define KEYRELEASEMASK  (1L<<1)
+# define BUTTONPRESSMASK (1L<<2)
+# define STRUCNOTIFYMASK (1L<<17) 
 
 typedef struct s_vec3
 {

@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:42:38 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/14 13:31:49 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:29:00 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,22 @@
 int	close_window(t_scene *scene)
 {
 	void	*mlx_ptr;
+	void	*win_ptr;
+	void	*img_ptr;
 
 	if (!scene)
 		exit(0);
 	mlx_ptr = scene->disp.mlx;
-	if (scene->disp.img)
-		mlx_destroy_image(scene->disp.mlx, scene->disp.img);
-	if (scene->disp.win)
-		mlx_destroy_window(scene->disp.mlx, scene->disp.win);
+	win_ptr = scene->disp.win;
+	img_ptr = scene->disp.img;
+	if (img_ptr && mlx_ptr)
+		mlx_destroy_image(mlx_ptr, img_ptr);
+	if (win_ptr && mlx_ptr)
+		mlx_destroy_window(mlx_ptr, win_ptr);
 	ft_free_scene(scene);
 	if (mlx_ptr)
 	{
-		mlx_destroy_display(scene->disp.mlx);
+		mlx_destroy_display(mlx_ptr);
 		free(mlx_ptr);
 	}
 	exit(0);

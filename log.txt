@@ -27,570 +27,6 @@ t_scene	*ft_get_scene(char *file)
 	return (scene);
 }
 
-===== srcs/parser/2-allocate.c =====
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   2-allocate.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 20:54:32 by ghenriqu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minirt.h"
-
-static int	ft_is_object(char *line)
-{
-	int	i;
-
-	i = 0;
-	if (!line)
-		return (0);
-	while (line[i] == ' ')
-		i++;
-	if (!ft_strncmp(&line[i], "sp ", 3))
-		return (1);
-	if (!ft_strncmp(&line[i], "pl ", 3))
-		return (1);
-	if (!ft_strncmp(&line[i], "cy ", 3))
-		return (1);
-	return (0);
-}
-
-static int	*ft_count(char *file)
-{
-	int		*count;
-	int		fd;
-	char	*raw;
-	char	*line;
-	int		i;
-
-	count = ft_calloc(2, sizeof(int));
-	if (!count)
-		ft_exit(ERROR_MALLOC, 2);
-	fd = ft_get_fd(file);
-	raw = get_next_line(fd);
-	line = NULL;
-	while (raw)
-	{
-		line = ft_strtrim(raw, " \t\r\b\n");
-		free(raw);
-		if (line)
-		{
-			i = 0;
-			ft_tab_to_space(line);
-			while (line[i] == ' ')
-				i++;
-			if (!ft_strncmp(&line[i], "L ", 2))
-				count[0]++;
-			else if (ft_is_object(line))
-				count[1]++;
-			free(line);
-		}
-		raw = get_next_line(fd);
-	}
-	close(fd);
-	return (count);
-}
-
-static char	*ft_is_double(t_args *args, char *target, char *line, int fd)
-{
-	if (target)
-	{
-		free(line);
-		ft_free_args(args);
-		close(fd);
-		ft_exit(ERROR_SCENE, 2);
-	}
-	return (ft_strdup(line));
-}
-
-// 1 - set args NULL
-// 2 - strtrim for erase spaces
-// 3 - fill scruct according the type of the lines
-// 4 - Cam and ambient light can't duplicate
-// if invalid argument, call ft_is_double for free and exit
-void	ft_put_argument(t_args *args, int fd)
-{
-	int		i;
-	int		k;
-	char	*line;
-
-	args->ambient_light = NULL;
-	i = 0;
-	k = 0;
-	line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
-	while (line)
-	{
-		ft_tab_to_space(line);
-		if (!ft_strncmp(line, "A ", 2))
-			args->ambient_light = ft_is_double(args,
-					args->ambient_light, line, fd);
-		else if (!ft_strncmp(line, "C ", 2))
-			args->camera = ft_is_double(args, args->camera, line, fd);
-		else if (!ft_strncmp(line, "L ", 2))
-			args->light[k++] = ft_strdup(line);
-		else if (ft_is_object(line))
-			args->objects[i++] = ft_strdup(line);
-		else if (line[0] != '\n' && line[0] != '#')
-			ft_is_double(args, "invalid", line, fd);
-		free(line);
-		line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
-	}
-}
-
-// 1- call ft_count to get number of the Lights and objets
-// 2 - allocate memory for struct and arrays-arrays
-// 3 - call ft_put_argument to fill struct
-t_args	*ft_allocate_args(char *file)
-{
-	t_args	*args;
-	int		*count;
-	int		fd;
-
-	count = ft_count(file);
-	args = ft_calloc(sizeof(t_args), 1);
-	if (!args)
-		ft_exit(ERROR_MALLOC, 2);
-	args->camera = NULL;
-	args->light_count = count[0];
-	args->obj_count = count[1];
-	free(count);
-	args->objects = ft_calloc(sizeof(char *), (args->obj_count + 1));
-	if (!args->objects)
-		ft_exit(ERROR_MALLOC, 2);
-	args->objects[args->obj_count] = NULL;
-	if (args->light_count > 0)
-	{
-		args->light = ft_calloc(sizeof(char *), (args->light_count + 1));
-		if (!args->light_count)
-			ft_exit(ERROR_MALLOC, 2);
-		args->objects[args->light_count] = NULL;
-	}
-	fd = ft_get_fd(file);
-	ft_put_argument(args, fd);
-	close(fd);
-	return (args);
-}
-
-===== srcs/parser/0-main.c =====
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   0-main.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 20:08:48 by ghenriqu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minirt.h"
-
-/*
-static void ft_print_vec3(t_vec3 v)
-{
-    printf("(%.3f, %.3f, %.3f)", v.x, v.y, v.z);
-}
-
-static void ft_print_rgb(t_rgb c)
-{
-    printf("(%d, %d, %d)", c.r, c.g, c.b);
-}
-
-static const char *ft_obj_name(t_obj_type t)
-{
-    if (t == SPHERE) return "SPHERE";
-    if (t == PLANE) return "PLANE";
-    if (t == CYLINDER) return "CYLINDER";
-    return "UNKNOWN";
-}
-
-static void ft_print_object_data(t_object *obj)
-{
-    if (!obj || !obj->data)
-        return;
-
-    if (obj->type == SPHERE)
-    {
-        t_sphere *s = (t_sphere *)obj->data;
-        printf("      center = ");
-        ft_print_vec3(s->center);
-        printf("\n      diameter = %.3f\n", s->diameter);
-    }
-    else if (obj->type == PLANE)
-    {
-        t_plane *p = (t_plane *)obj->data;
-        printf("      point  = ");
-        ft_print_vec3(p->point);
-        printf("\n      normal = ");
-        ft_print_vec3(p->normal);
-        printf("\n");
-    }
-    else if (obj->type == CYLINDER)
-    {
-        t_cylinder *c = (t_cylinder *)obj->data;
-        printf("      center = ");
-        ft_print_vec3(c->center);
-        printf("\n      normal = ");
-        ft_print_vec3(c->normal);
-        printf("\n      diameter = %.3f\n", c->diameter);
-        printf("      height = %.3f\n", c->height);
-    }
-}
-
-static void ft_print_camdata(t_camdata c)
-{
-    printf("  camdata:\n");
-    printf("    forward  = ");
-    ft_print_vec3(c.forward);
-    printf("\n    right    = ");
-    ft_print_vec3(c.right);
-    printf("\n    up       = ");
-    ft_print_vec3(c.up);
-    printf("\n    viewport = %.3f x %.3f\n", c.viewport_width, c.viewport_height);
-}
-
-
-void ft_print_scene(t_scene *scene)
-{
-    if (!scene)
-        return;
-
-    printf("\n=========== SCENE ===========\n");
-
-    // AMBIENT LIGHT 
-    if (scene->ambient)
-    {
-        printf("\nAmbient Light:\n");
-        printf("  ratio = %.3f\n", scene->ambient->ratio);
-        printf("  color = ");
-        ft_print_rgb(scene->ambient->color);
-        printf("\n");
-    }
-
-    // CAMERA 
-    if (scene->camera)
-    {
-        printf("\nCamera:\n");
-        printf("  position = ");
-        ft_print_vec3(scene->camera->position);
-        printf("\n  vector   = ");
-        ft_print_vec3(scene->camera->vector);
-        printf("\n  fov      = %d\n", scene->camera->fov);
-        ft_print_camdata(scene->camera->camdata);
-    }
-
-    // LIGHTS 
-    printf("\nLights (%d):\n", scene->light_count);
-    for (int i = 0; i < scene->light_count; i++)
-    {
-        printf("  Light %d:\n", i);
-        printf("    position = ");
-        ft_print_vec3(scene->lights[i]->position);
-        printf("\n    ratio = %.3f\n", scene->lights[i]->ratio);
-        printf("    color = ");
-        ft_print_rgb(scene->lights[i]->color);
-        printf("\n");
-    }
-
-    // OBJECTS 
-    printf("\nObjects (%d):\n", scene->object_count);
-    for (int i = 0; i < scene->object_count; i++)
-    {
-        printf("  Object %d:\n", i);
-        printf("    type = %s\n", ft_obj_name(scene->objects[i]->type));
-        ft_print_object_data(scene->objects[i]);
-    }
-
-    printf("\n==============================\n\n");
-}*/
-
-int	main(int argc, char **argv)
-{
-	t_scene	*scene;
-
-	if (argc != 2 || ft_is_rt(argv[1]))
-		ft_exit(ERROR_PARAM, 1);
-	scene = ft_get_scene(argv[1]);
-	// ft_init_viewport(scene); aqui precisa inicializar a parte de left up right randerer ray.c
-	ft_init_graphics(scene);
-	render_scene(scene);
-	mlx_key_hook(scene->disp.win, key_press, scene);
-	mlx_hook(scene->disp.win, 17, 0, close_window, scene);
-	mlx_loop(scene->disp.mlx);
-	// ft_free_scene(scene);
-	return (0);
-}
-
-void	ft_exit(char *message, int code)
-{
-	if (message)
-		ft_putendl_fd(message, 2);
-	exit(code);
-}
-
-===== srcs/parser/3-parser.c =====
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   3-parser.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/02 15:35:39 by lgertrud         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minirt.h"
-
-t_scene	*ft_parser(t_args *args)
-{
-	t_scene	*scene;
-
-	scene = ft_calloc(sizeof(t_scene), 1);
-	scene->light_count = args->light_count;
-	scene->object_count = args->obj_count;
-	scene->ambient = ft_parser_al(args->ambient_light);
-	scene->camera = ft_parser_c(args->camera);
-	scene->lights = ft_parser_l(args->light, scene->light_count);
-	scene->objects = ft_parser_ob(args->objects, scene->object_count);
-	if (scene->ambient == NULL || scene->camera == NULL
-		|| (scene->light_count > 0 && scene->lights == NULL)
-		|| (scene->objects == NULL))
-	{
-		ft_free_args(args);
-		ft_free_scene(scene);
-		ft_exit(ERROR_SCENE, 2);
-	}
-	scene->camera->camdata = ft_compute_camera(*scene->camera, WIDTH, HEIGHT);
-	return (scene);
-}
-
-// 1 - count parts to verified if have 3 arguments.
-// 2 - if with 3 condictions:
-//		first argument is 'A'.
-//			parser ratio, if arguments is a float 0.0 - 1.0.
-//				parser RGB xxx,xxx,xxx.
-// 3 - strdup and get rgb for allocate arguments.
-t_ambient_light	*ft_parser_al(char *input)
-{
-	t_ambient_light	*al;
-	char			**args;
-
-	if (count_parts(input, ' ') != 3)
-		return (NULL);
-	args = ft_split(input, ' ');
-	if (ft_strncmp(args[0], "A", ft_strlen(args[0])) != 0
-		|| !ft_parser_ratio(args[1], 0.0, 1.0)
-		|| !ft_parser_rgb(args[2]))
-	{
-		ft_free_split(args);
-		return (NULL);
-	}
-	al = ft_calloc(sizeof(t_ambient_light), 1);
-	al->ratio = ft_atod(args[1]);
-	al->color = ft_get_rgb(args[2]);
-	ft_free_split(args);
-	return (al);
-}
-
-t_camera	*ft_parser_c(char *input)
-{
-	t_camera	*camera;
-	char		**args;
-
-	if (count_parts(input, ' ') != 4)
-		return (NULL);
-	args = ft_split(input, ' ');
-	if (ft_strncmp(args[0], "C", ft_strlen(args[0])) != 0
-		|| !ft_parser_vec3(args[1])
-		|| !ft_is_normalized(args[2])
-		|| !ft_parse_fov(args[3]))
-	{
-		ft_free_split(args);
-		return (NULL);
-	}
-	camera = ft_calloc(sizeof(t_camera), 1);
-	camera->position = ft_get_vec3(args[1]);
-	camera->vector = ft_get_vec3(args[2]);
-	camera->fov = ft_atod(args[3]);
-	ft_free_split(args);
-	return (camera);
-}
-
-t_light	**ft_parser_l(char **input, int count_light)
-{
-	t_light	**light;
-	char	**args;
-	int		i;
-
-	light = (t_light **)ft_alloc_arraystruc(count_light, sizeof(t_light));
-	if (!light)
-		return (NULL);
-	i = -1;
-	while (input[++i])
-	{
-		if (count_parts(input[i], ' ') != 4)
-			return (ft_free_arraystruc((void **)light, count_light), NULL);
-		args = ft_split(input[i], ' ');
-		if (ft_strncmp(args[0], "L", ft_strlen(args[0])) != 0
-			|| !ft_parser_vec3(args[1])
-			|| !ft_parser_ratio(args[2], 0, 1)
-			|| !ft_parser_rgb(args[3]))
-			return (ft_free_arraystruc((void **)light, count_light),
-				ft_free_split(args), NULL);
-		light[i]->position = ft_get_vec3(args[1]);
-		light[i]->ratio = ft_atod(args[2]);
-		light[i]->color = ft_get_rgb(args[3]);
-		ft_free_split(args);
-	}
-	return (light);
-}
-
-t_object	**ft_parser_ob(char **input, int count_objects)
-{
-	t_object	**objects;
-	int			i;
-
-	objects = (t_object **)ft_alloc_arraystruc(count_objects, sizeof(t_object));
-	if (!objects)
-		return (NULL);
-	i = -1;
-	while (++i < count_objects)
-	{
-		objects[i]->type = ft_get_type(input[i]);
-		if (objects[i]->type == INVALID)
-			return (ft_free_objects_struc(objects, count_objects), NULL);
-		objects[i]->data = ft_get_obj(objects[i]->type, input[i]);
-		if (objects[i]->data == NULL)
-			return (ft_free_objects_struc(objects, count_objects), NULL);
-	}
-	return (objects);
-}
-
-===== srcs/parser/3.1-parser_utils.c =====
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   3.1-parser_utils.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/19 16:20:22 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 20:56:03 by ghenriqu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minirt.h"
-
-// verified if all str value is a number
-int	ft_is_number(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str || !*str)
-		return (0);
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-// 1 - verified if have 3 parts when we split with ","
-// 2 - check if each part is a number and if it are between 0 - 255. 
-int	ft_parser_rgb(char *str)
-{
-	char	**s;
-	int		i;
-	int		value;
-
-	s = ft_split(str, ',');
-	if (!s || count_parts(str, ',') != 3)
-		return (ft_free_split(s), 0);
-	i = -1;
-	while (++i < 3)
-	{
-		if (!ft_is_number(s[i]))
-			return (ft_free_split(s), 0);
-		value = ft_atoi(s[i]);
-		if (value < 0 || value > 255)
-			return (ft_free_split(s), 0);
-	}
-	ft_free_split(s);
-	return (1);
-}
-
-// 1- call float format for check if the argument is a float
-// 2 - check if value are between min and max
-int	ft_parser_ratio(char *str, double min, double max)
-{
-	float	value;
-
-	if (!ft_float_format(str))
-		return (0);
-	value = ft_atod(str);
-	if (value < min || value > max)
-		return (0);
-	return (1);
-}
-
-// 1 - verify if have 3 parts when we split with ",".
-// 2 - check if all parts are in float format.
-int	ft_parser_vec3(char *str)
-{
-	char	**p;
-
-	p = ft_split(str, ',');
-	if (!p || count_parts(str, ',') != 3)
-		return (ft_free_split(p), 0);
-	if (!ft_float_format(p[0])
-		|| !ft_float_format(p[1])
-		|| !ft_float_format(p[2]))
-		return (ft_free_split(p), 0);
-	ft_free_split(p);
-	return (1);
-}
-
-// 1 - call parser vec3 for verify if str is a vector with 3 argument
-// 2 - call parser ratio, check if is a float and between -1 and 1.
-int	ft_is_normalized(char *str)
-{
-	char	**args;
-	double	x;
-	double	y;
-	double	z;
-
-	if (!ft_parser_vec3(str))
-		return (0);
-	args = ft_split(str, ',');
-	if (!args)
-		return (0);
-	if (!ft_parser_ratio(args[0], -1, 1)
-		|| !ft_parser_ratio(args[1], -1, 1)
-		|| !ft_parser_ratio(args[2], -1, 1))
-	{
-		ft_free_split(args);
-		return (0);
-	}
-	x = ft_atod(args[0]);
-	y = ft_atod(args[1]);
-	z = ft_atod(args[2]);
-	ft_free_split(args);
-	if (x == 0.0 && y == 0.0 && z == 0.0)
-		return (0);
-	return (1);
-}
-
 ===== srcs/parser/3.3-parser_utils.c =====
 /* ************************************************************************** */
 /*                                                                            */
@@ -864,6 +300,595 @@ void	**ft_alloc_arraystruc(int count, size_t type_size)
 	return (arr);
 }
 
+===== srcs/parser/0-main.c =====
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   0-main.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/12/13 21:16:49 by ghenriqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+/*
+static void ft_print_vec3(t_vec3 v)
+{
+    printf("(%.3f, %.3f, %.3f)", v.x, v.y, v.z);
+}
+
+static void ft_print_rgb(t_rgb c)
+{
+    printf("(%d, %d, %d)", c.r, c.g, c.b);
+}
+
+static const char *ft_obj_name(t_obj_type t)
+{
+    if (t == SPHERE) return "SPHERE";
+    if (t == PLANE) return "PLANE";
+    if (t == CYLINDER) return "CYLINDER";
+    return "UNKNOWN";
+}
+
+static void ft_print_object_data(t_object *obj)
+{
+    if (!obj || !obj->data)
+        return;
+
+    if (obj->type == SPHERE)
+    {
+        t_sphere *s = (t_sphere *)obj->data;
+        printf("      center = ");
+        ft_print_vec3(s->center);
+        printf("\n      diameter = %.3f\n", s->diameter);
+    }
+    else if (obj->type == PLANE)
+    {
+        t_plane *p = (t_plane *)obj->data;
+        printf("      point  = ");
+        ft_print_vec3(p->point);
+        printf("\n      normal = ");
+        ft_print_vec3(p->normal);
+        printf("\n");
+    }
+    else if (obj->type == CYLINDER)
+    {
+        t_cylinder *c = (t_cylinder *)obj->data;
+        printf("      center = ");
+        ft_print_vec3(c->center);
+        printf("\n      normal = ");
+        ft_print_vec3(c->normal);
+        printf("\n      diameter = %.3f\n", c->diameter);
+        printf("      height = %.3f\n", c->height);
+    }
+}
+
+static void ft_print_camdata(t_camdata c)
+{
+    printf("  camdata:\n");
+    printf("    forward  = ");
+    ft_print_vec3(c.forward);
+    printf("\n    right    = ");
+    ft_print_vec3(c.right);
+    printf("\n    up       = ");
+    ft_print_vec3(c.up);
+    printf("\n    viewport = %.3f x %.3f\n", c.viewport_width, c.viewport_height);
+}
+
+
+void ft_print_scene(t_scene *scene)
+{
+    if (!scene)
+        return;
+
+    printf("\n=========== SCENE ===========\n");
+
+    // AMBIENT LIGHT 
+    if (scene->ambient)
+    {
+        printf("\nAmbient Light:\n");
+        printf("  ratio = %.3f\n", scene->ambient->ratio);
+        printf("  color = ");
+        ft_print_rgb(scene->ambient->color);
+        printf("\n");
+    }
+
+    // CAMERA 
+    if (scene->camera)
+    {
+        printf("\nCamera:\n");
+        printf("  position = ");
+        ft_print_vec3(scene->camera->position);
+        printf("\n  vector   = ");
+        ft_print_vec3(scene->camera->vector);
+        printf("\n  fov      = %d\n", scene->camera->fov);
+        ft_print_camdata(scene->camera->camdata);
+    }
+
+    // LIGHTS 
+    printf("\nLights (%d):\n", scene->light_count);
+    for (int i = 0; i < scene->light_count; i++)
+    {
+        printf("  Light %d:\n", i);
+        printf("    position = ");
+        ft_print_vec3(scene->lights[i]->position);
+        printf("\n    ratio = %.3f\n", scene->lights[i]->ratio);
+        printf("    color = ");
+        ft_print_rgb(scene->lights[i]->color);
+        printf("\n");
+    }
+
+    // OBJECTS 
+    printf("\nObjects (%d):\n", scene->object_count);
+    for (int i = 0; i < scene->object_count; i++)
+    {
+        printf("  Object %d:\n", i);
+        printf("    type = %s\n", ft_obj_name(scene->objects[i]->type));
+        ft_print_object_data(scene->objects[i]);
+    }
+
+    printf("\n==============================\n\n");
+}*/
+
+int	main(int argc, char **argv)
+{
+	t_scene	*scene;
+
+	if (argc != 2 || ft_is_rt(argv[1]))
+		ft_exit(ERROR_PARAM, 1);
+	scene = ft_get_scene(argv[1]);
+	// ft_init_viewport(scene); aqui precisa inicializar a parte de left up right randerer ray.c
+	ft_init_graphics(scene);
+	render_scene(scene);
+	mlx_key_hook(scene->disp.win, key_press, scene);
+	mlx_hook(scene->disp.win, 17, 0, close_window, scene);
+	mlx_loop(scene->disp.mlx);
+	// ft_free_scene(scene);
+	return (0);
+}
+
+void	ft_exit(char *message, int code)
+{
+	if (message)
+		ft_putendl_fd(message, 2);
+	exit(code);
+}
+
+===== srcs/parser/2-allocate.c =====
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   2-allocate.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/12/14 13:45:00 by ghenriqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+static int	ft_is_object(char *line)
+{
+	int	i;
+
+	i = 0;
+	if (!line)
+		return (0);
+	while (line[i] == ' ')
+		i++;
+	if (!ft_strncmp(&line[i], "sp ", 3))
+		return (1);
+	if (!ft_strncmp(&line[i], "pl ", 3))
+		return (1);
+	if (!ft_strncmp(&line[i], "cy ", 3))
+		return (1);
+	return (0);
+}
+
+static int	*ft_count(char *file)
+{
+	int		*count;
+	int		fd;
+	char	*line;
+	char	*trimmed;
+	int		i;
+
+	count = ft_calloc(2, sizeof(int));
+	if (!count)
+		ft_exit(ERROR_MALLOC, 2);
+	fd = ft_get_fd(file);
+	line = get_next_line(fd);
+	while (line)
+	{
+		trimmed = ft_strtrim(line, " \t\r\b\n");
+		free(line);
+		if (!trimmed)
+			break ;
+		ft_tab_to_space(trimmed);
+		i = 0;
+		while (trimmed[i] == ' ')
+			i++;
+		if (!ft_strncmp(&trimmed[i], "L ", 2))
+			count[0]++;
+		else if (ft_is_object(trimmed))
+			count[1]++;
+		
+		free(trimmed);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (count);
+}
+
+static char	*ft_is_double(t_args *args, char *target, char *line, int fd)
+{
+	if (target)
+	{
+		free(line);
+		ft_free_args(args);
+		close(fd);
+		ft_exit(ERROR_SCENE, 2);
+	}
+	return (ft_strdup(line));
+}
+
+// 1 - set args NULL
+// 2 - strtrim for erase spaces
+// 3 - fill scruct according the type of the lines
+// 4 - Cam and ambient light can't duplicate
+// if invalid argument, call ft_is_double for free and exit
+void	ft_put_argument(t_args *args, int fd)
+{
+	int		i;
+	int		k;
+	char	*line;
+	char	*trimmed;
+
+	args->ambient_light = NULL;
+	i = 0;
+	k = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		trimmed = ft_strtrim(line, " \t\r\b\n");
+		ft_tab_to_space(trimmed);
+		
+		if (!ft_strncmp(trimmed, "A ", 2))
+			args->ambient_light = ft_is_double(args,
+					args->ambient_light, trimmed, fd);
+		else if (!ft_strncmp(trimmed, "C ", 2))
+			args->camera = ft_is_double(args, args->camera, trimmed, fd);
+		else if (!ft_strncmp(trimmed, "L ", 2))
+			args->light[k++] = ft_strdup(trimmed);
+		else if (ft_is_object(trimmed))
+			args->objects[i++] = ft_strdup(trimmed);
+		else if (trimmed[0] != '\n' && trimmed[0] != '#' && trimmed[0] != '\0')
+			ft_is_double(args, "invalid", trimmed, fd);
+		
+		free(trimmed);
+		free(line);
+		line = get_next_line(fd);
+	}
+}
+
+// 1- call ft_count to get number of the Lights and objets
+// 2 - allocate memory for struct and arrays-arrays
+// 3 - call ft_put_argument to fill struct
+t_args	*ft_allocate_args(char *file)
+{
+	t_args	*args;
+	int		*count;
+	int		fd;
+
+	count = ft_count(file);
+	args = ft_calloc(sizeof(t_args), 1);
+	if (!args)
+		ft_exit(ERROR_MALLOC, 2);
+	args->camera = NULL;
+	args->light_count = count[0];
+	args->obj_count = count[1];
+	free(count);
+	args->objects = ft_calloc(sizeof(char *), (args->obj_count + 1));
+	if (!args->objects)
+		ft_exit(ERROR_MALLOC, 2);
+	args->objects[args->obj_count] = NULL;
+	if (args->light_count > 0)
+	{
+		args->light = ft_calloc(sizeof(char *), (args->light_count + 1));
+		if (!args->light_count)
+			ft_exit(ERROR_MALLOC, 2);
+		args->objects[args->light_count] = NULL;
+	}
+	fd = ft_get_fd(file);
+	ft_put_argument(args, fd);
+	close(fd);
+	return (args);
+}
+
+===== srcs/parser/3-parser.c =====
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   3-parser.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/12/13 21:23:52 by ghenriqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+t_scene	*ft_parser(t_args *args)
+{
+	t_scene	*scene;
+
+	scene = ft_calloc(sizeof(t_scene), 1);
+	scene->light_count = args->light_count;
+	scene->object_count = args->obj_count;
+	scene->ambient = ft_parser_al(args->ambient_light);
+	scene->camera = ft_parser_c(args->camera);
+	scene->lights = ft_parser_l(args->light, scene->light_count);
+	scene->objects = ft_parser_ob(args->objects, scene->object_count);
+	if (scene->ambient == NULL || scene->camera == NULL
+		|| (scene->light_count > 0 && scene->lights == NULL)
+		|| (scene->objects == NULL))
+	{
+		ft_free_args(args);
+		ft_free_scene(scene);
+		ft_exit(ERROR_SCENE, 2);
+	}
+	scene->camera->camdata = ft_compute_camera(*scene->camera, WIDTH, HEIGHT);
+	return (scene);
+}
+
+// 1 - count parts to verified if have 3 arguments.
+// 2 - if with 3 condictions:
+//		first argument is 'A'.
+//			parser ratio, if arguments is a float 0.0 - 1.0.
+//				parser RGB xxx,xxx,xxx.
+// 3 - strdup and get rgb for allocate arguments.
+t_ambient_light	*ft_parser_al(char *input)
+{
+	t_ambient_light	*al;
+	char			**args;
+
+	if (count_parts(input, ' ') != 3)
+		return (NULL);
+	args = ft_split(input, ' ');
+	if (ft_strncmp(args[0], "A", ft_strlen(args[0])) != 0
+		|| !ft_parser_ratio(args[1], 0.0, 1.0)
+		|| !ft_parser_rgb(args[2]))
+	{
+		ft_free_split(args);
+		return (NULL);
+	}
+	al = ft_calloc(sizeof(t_ambient_light), 1);
+	al->ratio = ft_atod(args[1]);
+	al->color = ft_get_rgb(args[2]);
+	ft_free_split(args);
+	return (al);
+}
+
+t_camera	*ft_parser_c(char *input)
+{
+	t_camera	*camera;
+	char		**args;
+
+	if (count_parts(input, ' ') != 4)
+		return (NULL);
+	args = ft_split(input, ' ');
+	if (ft_strncmp(args[0], "C", ft_strlen(args[0])) != 0
+		|| !ft_parser_vec3(args[1])
+		|| !ft_is_normalized(args[2])
+		|| !ft_parse_fov(args[3]))
+	{
+		ft_free_split(args);
+		return (NULL);
+	}
+	camera = ft_calloc(sizeof(t_camera), 1);
+	camera->position = ft_get_vec3(args[1]);
+	camera->vector = ft_get_vec3(args[2]);
+	camera->fov = ft_atod(args[3]);
+	ft_free_split(args);
+	return (camera);
+}
+
+t_light	**ft_parser_l(char **input, int count_light)
+{
+	t_light	**light;
+	char	**args;
+	int		i;
+
+	if (!input || count_light <= 0)
+		return (NULL);
+	light = (t_light **)ft_alloc_arraystruc(count_light, sizeof(t_light));
+	if (!light)
+		return (NULL);
+	i = 0;
+	while (i < count_light)
+	{
+		if (!input[i]) 
+			break;
+		if (count_parts(input[i], ' ') != 4)
+			return (ft_free_arraystruc((void **)light, count_light), NULL);
+		args = ft_split(input[i], ' ');
+		if (!args || !args[0] || !args[1] || !args[2] || !args[3] || 
+			ft_strncmp(args[0], "L", ft_strlen(args[0])) != 0
+			|| !ft_parser_vec3(args[1])
+			|| !ft_parser_ratio(args[2], 0, 1)
+			|| !ft_parser_rgb(args[3]))
+		{
+			ft_free_split(args);
+			return (ft_free_arraystruc((void **)light, count_light), NULL);
+		}
+		light[i]->position = ft_get_vec3(args[1]);
+		light[i]->ratio = ft_atod(args[2]);
+		light[i]->color = ft_get_rgb(args[3]);
+		ft_free_split(args);
+		i++;
+	}
+	return (light);
+}
+
+t_object	**ft_parser_ob(char **input, int count_objects)
+{
+	t_object	**objects;
+	int			i;
+
+	if (!input || count_objects <= 0)
+		return (NULL);
+	objects = (t_object **)ft_alloc_arraystruc(count_objects, sizeof(t_object));
+	if (!objects)
+		return (NULL);
+	i = 0;
+	while (i < count_objects)
+	{
+		if (!input[i]) 
+			break;
+		objects[i]->type = ft_get_type(input[i]);
+		if (objects[i]->type == INVALID)
+			return (ft_free_objects_struc(objects, count_objects), NULL);
+		objects[i]->data = ft_get_obj(objects[i]->type, input[i]);
+		if (objects[i]->data == NULL)
+			return (ft_free_objects_struc(objects, count_objects), NULL);
+		i++;
+	}
+	return (objects);
+}
+
+===== srcs/parser/3.1-parser_utils.c =====
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   3.1-parser_utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/19 16:20:22 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/12/13 21:25:21 by ghenriqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+// verified if all str value is a number
+int	ft_is_number(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str || !*str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+// 1 - verified if have 3 parts when we split with ","
+// 2 - check if each part is a number and if it are between 0 - 255. 
+int	ft_parser_rgb(char *str)
+{
+	char	**s;
+	int		i;
+	int		value;
+
+	s = ft_split(str, ',');
+	if (!s || count_parts(str, ',') != 3)
+		return (ft_free_split(s), 0);
+	i = -1;
+	while (++i < 3)
+	{
+		if (!ft_is_number(s[i]))
+			return (ft_free_split(s), 0);
+		value = ft_atoi(s[i]);
+		if (value < 0 || value > 255)
+			return (ft_free_split(s), 0);
+	}
+	ft_free_split(s);
+	return (1);
+}
+
+// 1- call float format for check if the argument is a float
+// 2 - check if value are between min and max
+int	ft_parser_ratio(char *str, double min, double max)
+{
+	float	value;
+
+	if (!ft_float_format(str))
+		return (0);
+	value = ft_atod(str);
+	if (value < min || value > max)
+		return (0);
+	return (1);
+}
+
+// 1 - verify if have 3 parts when we split with ",".
+// 2 - check if all parts are in float format.
+int	ft_parser_vec3(char *str)
+{
+	char	**p;
+
+	if (!str)
+		return (0);
+	p = ft_split(str, ',');
+	if (!p || count_parts(str, ',') != 3 || !p[0] || !p[1] || !p[2])
+	{
+		ft_free_split(p);
+		return (0);
+	}
+	if (!ft_float_format(p[0])
+		|| !ft_float_format(p[1])
+		|| !ft_float_format(p[2]))
+	{
+		ft_free_split(p);
+		return (0);
+	}
+	ft_free_split(p);
+	return (1);
+}
+
+// 1 - call parser vec3 for verify if str is a vector with 3 argument
+// 2 - call parser ratio, check if is a float and between -1 and 1.
+int	ft_is_normalized(char *str)
+{
+	char	**args;
+	double	x;
+	double	y;
+	double	z;
+
+	if (!ft_parser_vec3(str))
+		return (0);
+	args = ft_split(str, ',');
+	if (!args)
+		return (0);
+	if (!ft_parser_ratio(args[0], -1, 1)
+		|| !ft_parser_ratio(args[1], -1, 1)
+		|| !ft_parser_ratio(args[2], -1, 1))
+	{
+		ft_free_split(args);
+		return (0);
+	}
+	x = ft_atod(args[0]);
+	y = ft_atod(args[1]);
+	z = ft_atod(args[2]);
+	ft_free_split(args);
+	if (x == 0.0 && y == 0.0 && z == 0.0)
+		return (0);
+	return (1);
+}
+
 ===== srcs/parser/support_functions.c =====
 /* ************************************************************************** */
 /*                                                                            */
@@ -873,7 +898,7 @@ void	**ft_alloc_arraystruc(int count, size_t type_size)
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:46:12 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 20:51:41 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 21:16:37 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -940,7 +965,7 @@ void	ft_free_args(t_args *args)
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 16:13:14 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 20:34:14 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 13:35:42 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -956,7 +981,8 @@ void	ft_free_arraystruc(void **arr, int count)
 	i = 0;
 	while (i < count)
 	{
-		free(arr[i]);
+		if (arr[i])
+			free(arr[i]);
 		i++;
 	}
 	free(arr);
@@ -968,14 +994,17 @@ void	ft_free_scene(t_scene *scene)
 
 	if (!scene)
 		return ;
-	free(scene->ambient);
-	free(scene->camera);
+	if (scene->ambient)
+		free(scene->ambient);
+	if (scene->camera)
+		free(scene->camera);
 	if (scene->lights)
 	{
 		i = 0;
 		while (i < scene->light_count)
 		{
-			free(scene->lights[i]);
+			if (scene->lights[i])
+				free(scene->lights[i]);
 			i++;
 		}
 		free(scene->lights);
@@ -1010,35 +1039,11 @@ void	ft_free_objects_struc(t_object **arr, int count)
 	i = 0;
 	while (i < count)
 	{
-		ft_free_object(arr[i]);
+		if (arr[i])
+			ft_free_object(arr[i]);
 		i++;
 	}
 	free(arr);
-}
-
-===== srcs/vectors/vec3_cross.c =====
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vec3_cross.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/23 18:59:59 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/13 19:09:19 by ghenriqu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minirt.h"
-
-t_vec3	vec3_cross(t_vec3 vec1, t_vec3 vec2)
-{
-	t_vec3	res;
-
-	res.x = vec1.y * vec2.z - vec1.z * vec2.y;
-	res.y = vec1.z * vec2.x - vec1.x * vec2.z;
-	res.z = vec1.x * vec2.y - vec1.y * vec2.x;
-	return (res);
 }
 
 ===== srcs/vectors/vec3_add.c =====
@@ -1192,26 +1197,6 @@ t_vec3	vec3_new(double x, double y, double z)
 	return ((t_vec3){x, y, z});
 }
 
-===== srcs/vectors/vec3_normalize.c =====
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vec3_normalize.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/23 19:28:05 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/02 15:21:08 by lgertrud         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minirt.h"
-
-t_vec3	vec3_normalize(t_vec3 vec)
-{
-	return (vec3_scale(vec, 1.0 / vec3_len(vec)));
-}
-
 ===== srcs/vectors/vec3_scale.c =====
 /* ************************************************************************** */
 /*                                                                            */
@@ -1252,6 +1237,99 @@ t_vec3	vec3_sub(t_vec3 vec1, t_vec3 vec2)
 	return (vec3_new(vec1.x - vec2.x, vec1.y - vec2.y, vec1.z - vec2.z));
 }
 
+===== srcs/vectors/vec3_cross.c =====
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vec3_cross.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/23 18:59:59 by ghenriqu          #+#    #+#             */
+/*   Updated: 2025/12/13 19:09:19 by ghenriqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+t_vec3	vec3_cross(t_vec3 vec1, t_vec3 vec2)
+{
+	t_vec3	res;
+
+	res.x = vec1.y * vec2.z - vec1.z * vec2.y;
+	res.y = vec1.z * vec2.x - vec1.x * vec2.z;
+	res.z = vec1.x * vec2.y - vec1.y * vec2.x;
+	return (res);
+}
+
+===== srcs/vectors/vec3_normalize.c =====
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vec3_normalize.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/23 19:28:05 by ghenriqu          #+#    #+#             */
+/*   Updated: 2025/12/13 21:16:31 by ghenriqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+t_vec3	vec3_normalize(t_vec3 vec)
+{
+	double	len;
+
+	len = vec3_len(vec);
+	if (len < 1e-10)
+		return (vec3_new(0, 0, 1));
+	return (vec3_scale(vec, 1.0 / len));
+}
+
+===== srcs/graphics/events.c =====
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   events.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/13 19:42:38 by ghenriqu          #+#    #+#             */
+/*   Updated: 2025/12/14 13:31:49 by ghenriqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+int	close_window(t_scene *scene)
+{
+	void	*mlx_ptr;
+
+	if (!scene)
+		exit(0);
+	mlx_ptr = scene->disp.mlx;
+	if (scene->disp.img)
+		mlx_destroy_image(scene->disp.mlx, scene->disp.img);
+	if (scene->disp.win)
+		mlx_destroy_window(scene->disp.mlx, scene->disp.win);
+	ft_free_scene(scene);
+	if (mlx_ptr)
+	{
+		mlx_destroy_display(scene->disp.mlx);
+		free(mlx_ptr);
+	}
+	exit(0);
+	return (0);
+}
+
+int	key_press(int keycode, t_scene *scene)
+{
+	if (keycode == 65307)
+		close_window(scene);
+	return (0);
+}
+
 ===== srcs/graphics/minilibx_setup.c =====
 /* ************************************************************************** */
 /*                                                                            */
@@ -1261,7 +1339,7 @@ t_vec3	vec3_sub(t_vec3 vec1, t_vec3 vec2)
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 19:33:59 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/13 19:55:13 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 21:16:51 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1284,43 +1362,6 @@ void	ft_init_graphics(t_scene *scene)
 		ft_exit("Error: Image address failed", 1);
 }
 
-===== srcs/graphics/events.c =====
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   events.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/13 19:42:38 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/13 20:12:00 by ghenriqu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minirt.h"
-
-int	close_window(t_scene *scene)
-{
-	if (!scene)
-		exit(0);
-	if (scene->disp.img)
-		mlx_destroy_image(scene->disp.mlx, scene->disp.img);
-	if (scene->disp.win)
-		mlx_destroy_window(scene->disp.mlx, scene->disp.win);
-	ft_free_scene(scene);
-	mlx_destroy_display(scene->disp.mlx);
-	free(scene->disp.mlx);
-	exit(0);
-	return (0);
-}
-
-int	key_press(int keycode, t_scene *scene)
-{
-	if (keycode == 65307)
-		close_window(scene);
-	return (0);
-}
-
 ===== srcs/ray/cam_data.c =====
 /* ************************************************************************** */
 /*                                                                            */
@@ -1330,7 +1371,7 @@ int	key_press(int keycode, t_scene *scene)
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 16:42:02 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 20:22:29 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 21:16:53 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1679,128 +1720,6 @@ bool	hit_plane(t_ray ray, t_plane *pl, double *t)
 	return (true);
 }
 
-===== srcs/render/normal.c =====
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   normal.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/13 19:01:14 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/13 20:15:32 by ghenriqu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minirt.h"
-
-static t_vec3	get_cylinder_normal(t_hit *hit, t_vec3 point)
-{
-	t_cylinder	*cy;
-	t_vec3		to_point;
-	double		proj;
-	t_vec3		point_on_axis;
-	double		dist_to_base;
-	double		dist_to_top;
-
-	cy = (t_cylinder *)hit->object;
-	to_point = vec3_sub(point, cy->center);
-	proj = vec3_dot(to_point, cy->normal);
-	dist_to_base = fabs(proj);
-	dist_to_top = fabs(proj - cy->height);
-	
-	if (dist_to_base < 1e-4)
-		return (vec3_scale(cy->normal, -1.0));
-	if (dist_to_top < 1e-4)
-		return (cy->normal);
-	point_on_axis = vec3_add(cy->center, vec3_scale(cy->normal, proj));
-	return (vec3_normalize(vec3_sub(point, point_on_axis)));
-}
-
-t_vec3	get_normal(t_hit *hit, t_vec3 point)
-{
-	t_vec3	normal;
-	t_sphere	*sp;
-	t_plane		*pl;
-
-	if (hit->type == SPHERE)
-	{
-		sp = (t_sphere *)hit->object;
-		normal = vec3_normalize(vec3_sub(point, sp->center));
-	}
-	else if (hit->type == PLANE)
-	{
-		pl = (t_plane *)hit->object;
-		normal = vec3_normalize(pl->normal);
-	}
-	else if (hit->type == CYLINDER)
-		normal = get_cylinder_normal(hit, point);
-	else
-		normal = vec3_new(0, 1, 0);
-	return (normal);
-}
-
-===== srcs/render/render.c =====
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/13 18:48:20 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/13 20:05:19 by ghenriqu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minirt.h"
-
-void    render_scene(t_scene *scene)
-{
-    int     x;
-    int     y;
-    t_ray   ray;
-    t_hit   hit;
-    t_rgb   color;
-    t_vec3  point;
-    t_vec3  normal;
-
-    y = 0;
-    while (y < HEIGHT)
-    {
-        x = 0;
-        while (x < WIDTH)
-        {
-            ray = make_ray(x, y, scene);
-            if (hit_objects(scene, ray, &hit))
-            {
-				point = vec3_add(ray.origin, vec3_scale(ray.direction, hit.t));
-				normal = get_normal(&hit, point);
-				color = shade_hit(scene, &hit, point, normal);
-            }
-			else
-				color = (t_rgb){0, 0, 0};
-			put_pixel(scene, x, y, rgb_to_int(color));
-			x++;
-		}
-		y++;
-    }
-	mlx_put_image_to_window(scene->disp.mlx, scene->disp.win,
-				scene->disp.img, 0, 0);
-}
-
-void	put_pixel(t_scene *scene, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
-		return;
-	
-	dst = scene->disp.addr + (y * scene->disp.line_length 
-							+ x * (scene->disp.bpp / 8));
-	*(unsigned int *)dst = color;
-}
-
 ===== srcs/lighting/ambient_light.c =====
 /* ************************************************************************** */
 /*                                                                            */
@@ -1978,5 +1897,133 @@ int	rgb_to_int(t_rgb color)
 	if (b < 0) b = 0;
 	if (b > 255) b = 255;
 	return (r << 16 | g << 8 | b);
+}
+
+===== srcs/render/normal.c =====
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   normal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/13 19:01:14 by ghenriqu          #+#    #+#             */
+/*   Updated: 2025/12/13 21:16:40 by ghenriqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+static t_vec3	get_cylinder_normal(t_hit *hit, t_vec3 point)
+{
+	t_cylinder	*cy;
+	t_vec3		to_point;
+	double		proj;
+	t_vec3		point_on_axis;
+	double		dist_to_base;
+	double		dist_to_top;
+
+	cy = (t_cylinder *)hit->object;
+	to_point = vec3_sub(point, cy->center);
+	proj = vec3_dot(to_point, cy->normal);
+	dist_to_base = fabs(proj);
+	dist_to_top = fabs(proj - cy->height);
+	
+	if (dist_to_base < 1e-4)
+		return (vec3_scale(cy->normal, -1.0));
+	if (dist_to_top < 1e-4)
+		return (cy->normal);
+	point_on_axis = vec3_add(cy->center, vec3_scale(cy->normal, proj));
+	return (vec3_normalize(vec3_sub(point, point_on_axis)));
+}
+
+t_vec3	get_normal(t_hit *hit, t_vec3 point)
+{
+	t_vec3	normal;
+	t_sphere	*sp;
+	t_plane		*pl;
+
+	if (hit->type == SPHERE)
+	{
+		sp = (t_sphere *)hit->object;
+		normal = vec3_normalize(vec3_sub(point, sp->center));
+	}
+	else if (hit->type == PLANE)
+	{
+		pl = (t_plane *)hit->object;
+		normal = vec3_normalize(pl->normal);
+	}
+	else if (hit->type == CYLINDER)
+		normal = get_cylinder_normal(hit, point);
+	else
+		normal = vec3_new(0, 1, 0);
+	return (normal);
+}
+
+===== srcs/render/render.c =====
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/13 18:48:20 by ghenriqu          #+#    #+#             */
+/*   Updated: 2025/12/14 13:35:32 by ghenriqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+void    render_scene(t_scene *scene)
+{
+    int     x;
+    int     y;
+    t_ray   ray;
+    t_hit   hit;
+    t_rgb   color;
+    t_vec3  point;
+    t_vec3  normal;
+
+	if (!scene || !scene->disp.mlx || !scene->disp.win || !scene->disp.img)
+	{
+		printf("Error: Invalid scene or display\n");
+		return ;
+	}
+    y = 0;
+    while (y < HEIGHT)
+    {
+        x = 0;
+        while (x < WIDTH)
+        {
+            ray = make_ray(x, y, scene);
+            if (hit_objects(scene, ray, &hit))
+            {
+				point = vec3_add(ray.origin, vec3_scale(ray.direction, hit.t));
+				normal = get_normal(&hit, point);
+				color = shade_hit(scene, &hit, point, normal);
+            }
+			else
+				color = (t_rgb){0, 0, 0};
+			put_pixel(scene, x, y, rgb_to_int(color));
+			x++;
+		}
+		y++;
+    }
+	if (scene->disp.mlx && scene->disp.win && scene->disp.img)
+		mlx_put_image_to_window(scene->disp.mlx, scene->disp.win,
+				scene->disp.img, 0, 0);
+}
+
+void	put_pixel(t_scene *scene, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+		return;
+	
+	dst = scene->disp.addr + (y * scene->disp.line_length 
+							+ x * (scene->disp.bpp / 8));
+	*(unsigned int *)dst = color;
 }
 
