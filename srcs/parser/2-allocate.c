@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 13:23:59 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 13:29:28 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,30 @@ static int	*ft_count(char *file)
 {
 	int		*count;
 	int		fd;
-	char	*raw;
 	char	*line;
+	char	*trimmed;
 	int		i;
 
 	count = ft_calloc(2, sizeof(int));
 	if (!count)
 		ft_exit(ERROR_MALLOC, 2);
 	fd = ft_get_fd(file);
-	raw = get_next_line(fd);
-	line = NULL;
-	while (raw)
+	line = get_next_line(fd);
+	while (line)
 	{
-		line = ft_strtrim(raw, " \t\r\b\n");
-		if (raw)
-			free(raw);
-		if (line)
-		{
-			i = 0;
-			ft_tab_to_space(line);
-			while (line[i] == ' ')
-				i++;
-			if (!ft_strncmp(&line[i], "L ", 2))
-				count[0]++;
-			else if (ft_is_object(line))
-				count[1]++;
-			free(line);
-		}
-		raw = get_next_line(fd);
+		trimmed = ft_strtrim(line, " \t\r\b\n");
+		ft_tab_to_space(trimmed);
+		i = 0;
+		while (trimmed[i] == ' ')
+			i++;
+		if (!ft_strncmp(&trimmed[i], "L ", 2))
+			count[0]++;
+		else if (ft_is_object(trimmed))
+			count[1]++;
+		
+		free(trimmed);
+		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (count);
@@ -89,27 +85,32 @@ void	ft_put_argument(t_args *args, int fd)
 	int		i;
 	int		k;
 	char	*line;
+	char	*trimmed;
 
 	args->ambient_light = NULL;
 	i = 0;
 	k = 0;
-	line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
+	line = get_next_line(fd);
 	while (line)
 	{
-		ft_tab_to_space(line);
-		if (!ft_strncmp(line, "A ", 2))
+		trimmed = ft_strtrim(line, " \t\r\b\n");
+		ft_tab_to_space(trimmed);
+		
+		if (!ft_strncmp(trimmed, "A ", 2))
 			args->ambient_light = ft_is_double(args,
-					args->ambient_light, line, fd);
-		else if (!ft_strncmp(line, "C ", 2))
-			args->camera = ft_is_double(args, args->camera, line, fd);
-		else if (!ft_strncmp(line, "L ", 2))
-			args->light[k++] = ft_strdup(line);
-		else if (ft_is_object(line))
-			args->objects[i++] = ft_strdup(line);
-		else if (line[0] != '\n' && line[0] != '#')
-			ft_is_double(args, "invalid", line, fd);
+					args->ambient_light, trimmed, fd);
+		else if (!ft_strncmp(trimmed, "C ", 2))
+			args->camera = ft_is_double(args, args->camera, trimmed, fd);
+		else if (!ft_strncmp(trimmed, "L ", 2))
+			args->light[k++] = ft_strdup(trimmed);
+		else if (ft_is_object(trimmed))
+			args->objects[i++] = ft_strdup(trimmed);
+		else if (trimmed[0] != '\n' && trimmed[0] != '#' && trimmed[0] != '\0')
+			ft_is_double(args, "invalid", trimmed, fd);
+		
+		free(trimmed);
 		free(line);
-		line = ft_strtrim(get_next_line(fd), " \t\r\b\n");
+		line = get_next_line(fd);
 	}
 }
 

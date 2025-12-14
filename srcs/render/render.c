@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 18:48:20 by ghenriqu          #+#    #+#             */
-/*   Updated: 2025/12/13 21:16:45 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 13:35:32 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ void    render_scene(t_scene *scene)
     t_vec3  point;
     t_vec3  normal;
 
+	if (!scene || !scene->disp.mlx || !scene->disp.win || !scene->disp.img)
+	{
+		printf("Error: Invalid scene or display\n");
+		return ;
+	}
     y = 0;
     while (y < HEIGHT)
     {
@@ -42,7 +47,8 @@ void    render_scene(t_scene *scene)
 		}
 		y++;
     }
-	mlx_put_image_to_window(scene->disp.mlx, scene->disp.win,
+	if (scene->disp.mlx && scene->disp.win && scene->disp.img)
+		mlx_put_image_to_window(scene->disp.mlx, scene->disp.win,
 				scene->disp.img, 0, 0);
 }
 

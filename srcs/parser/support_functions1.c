@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 16:13:14 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 21:16:34 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 13:35:42 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	ft_free_arraystruc(void **arr, int count)
 	i = 0;
 	while (i < count)
 	{
-		free(arr[i]);
+		if (arr[i])
+			free(arr[i]);
 		i++;
 	}
 	free(arr);
@@ -34,14 +35,17 @@ void	ft_free_scene(t_scene *scene)
 
 	if (!scene)
 		return ;
-	free(scene->ambient);
-	free(scene->camera);
+	if (scene->ambient)
+		free(scene->ambient);
+	if (scene->camera)
+		free(scene->camera);
 	if (scene->lights)
 	{
 		i = 0;
 		while (i < scene->light_count)
 		{
-			free(scene->lights[i]);
+			if (scene->lights[i])
+				free(scene->lights[i]);
 			i++;
 		}
 		free(scene->lights);
@@ -76,7 +80,8 @@ void	ft_free_objects_struc(t_object **arr, int count)
 	i = 0;
 	while (i < count)
 	{
-		ft_free_object(arr[i]);
+		if (arr[i])
+			ft_free_object(arr[i]);
 		i++;
 	}
 	free(arr);
