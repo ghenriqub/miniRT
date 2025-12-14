@@ -6,7 +6,7 @@
 #    By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/13 20:39:24 by ghenriqu          #+#    #+#              #
-#    Updated: 2025/12/14 15:20:38 by ghenriqu         ###   ########.fr        #
+#    Updated: 2025/12/14 16:32:03 by ghenriqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRC         = $(SRC_DIR)/parser/0-main.c \
               $(SRC_DIR)/parser/3.2-parser_utils.c \
               $(SRC_DIR)/parser/3.3-parser_utils.c \
               $(SRC_DIR)/parser/3.4-parser_obj_utils.c \
+              $(SRC_DIR)/parser/3.5-parser_l.c \
               $(SRC_DIR)/parser/support_functions.c \
               $(SRC_DIR)/parser/support_functions1.c \
               $(SRC_DIR)/vectors/vec3_add.c \

@@ -6,17 +6,47 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:39:35 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 19:48:17 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 16:27:56 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+static void	update_hit(t_hit *hit, double t, t_object *obj, int type)
+{
+	hit->t = t;
+	hit->object = obj->data;
+	hit->type = type;
+}
+
+static int	is_valid_t(double t, double current)
+{
+	if (t > 1e-6 && t < current)
+		return (1);
+	return (0);
+}
+
+static void	test_object(t_object *obj, t_ray ray, t_hit *hit)
+{
+	double	t;
+
+	if (obj->type == SPHERE
+		&& hit_sphere(ray, (t_sphere *)obj->data, &t)
+		&& is_valid_t(t, hit->t))
+		update_hit(hit, t, obj, SPHERE);
+	else if (obj->type == PLANE
+		&& hit_plane(ray, (t_plane *)obj->data, &t)
+		&& is_valid_t(t, hit->t))
+		update_hit(hit, t, obj, PLANE);
+	else if (obj->type == CYLINDER
+		&& hit_cylinder(ray, (t_cylinder *)obj->data, &t)
+		&& is_valid_t(t, hit->t))
+		update_hit(hit, t, obj, CYLINDER);
+}
+
 bool	hit_objects(t_scene *scene, t_ray ray, t_hit *hit)
 {
-	double		t;
-	int			i;
-	t_object	*obj;
+	int	i;
 
 	hit->t = INFINITY;
 	hit->object = NULL;
@@ -24,43 +54,7 @@ bool	hit_objects(t_scene *scene, t_ray ray, t_hit *hit)
 	i = 0;
 	while (i < scene->object_count)
 	{
-		obj = scene->objects[i];
-		if (obj->type == SPHERE)
-		{
-			if (hit_sphere(ray, (t_sphere *)obj->data, &t))
-			{
-				if (t > 1e-6 && t < hit->t)
-				{
-					hit->t = t;
-					hit->object = obj->data;
-					hit->type = SPHERE;
-				}
-			}
-		}
-		else if (obj->type == PLANE)
-		{
-			if (hit_plane(ray, (t_plane *)obj->data, &t))
-			{
-				if (t > 1e-6 && t < hit->t)
-				{
-					hit->t = t;
-					hit->object = obj->data;
-					hit->type = PLANE;
-				}
-			}
-		}
-		else if (obj->type == CYLINDER)
-		{
-			if (hit_cylinder(ray, (t_cylinder *)obj->data, &t))
-			{
-				if (t > 1e-6 && t < hit->t)
-				{
-					hit->t = t;
-					hit->object = obj->data;
-					hit->type = CYLINDER;
-				}
-			}
-		}
+		test_object(scene->objects[i], ray, hit);
 		i++;
 	}
 	return (hit->object != NULL);

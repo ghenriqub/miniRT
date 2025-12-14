@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:38:39 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 14:48:27 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 16:31:14 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,41 +85,6 @@ t_camera	*ft_parser_c(char *input)
 	camera->fov = ft_atod(args[3]);
 	ft_free_split(args);
 	return (camera);
-}
-
-t_light	**ft_parser_l(char **input, int count_light)
-{
-	t_light	**light;
-	char	**args;
-	int		i;
-
-	light = (t_light **)ft_alloc_arraystruc(count_light, sizeof(t_light));
-	if (!light)
-		return (NULL);
-	i = 0;
-	while (i < count_light)
-	{
-		if (!input[i])
-			break ;
-		if (count_parts(input[i], ' ') != 4)
-			return (ft_free_arraystruc((void **)light, count_light), NULL);
-		args = ft_split(input[i], ' ');
-		if (!args || !args[0] || !args[1] || !args[2] || !args[3]
-			|| ft_strncmp(args[0], "L", ft_strlen(args[0])) != 0
-			|| !ft_parser_vec3(args[1])
-			|| !ft_parser_ratio(args[2], 0, 1)
-			|| !ft_parser_rgb(args[3]))
-		{
-			ft_free_split(args);
-			return (ft_free_arraystruc((void **)light, count_light), NULL);
-		}
-		light[i]->position = ft_get_vec3(args[1]);
-		light[i]->ratio = ft_atod(args[2]);
-		light[i]->color = ft_get_rgb(args[3]);
-		ft_free_split(args);
-		i++;
-	}
-	return (light);
 }
 
 t_object	**ft_parser_ob(char **input, int count_objects)
