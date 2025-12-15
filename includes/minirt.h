@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/15 17:00:27 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:44:40 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,32 @@ typedef struct s_hit
 	int			type;
 }	t_hit;
 
+typedef struct s_sphere_hit
+{
+	t_vec3	oc;
+	double	a;
+	double	b;
+	double	c;
+	double	delta;
+	double	sqrt_d;
+	double	t0;
+	double	t1;
+}	t_sphere_hit;
 
+typedef struct s_cylinder_hit
+{
+	t_vec3	oc;
+	t_vec3	d;
+	t_vec3	w;
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+	double	t1;
+	double	t2;
+	t_vec3	p;
+	double	h;
+}	t_cylinder_hit;
 // typedef struct s_world
 // {
 // 	t_camera	camera;

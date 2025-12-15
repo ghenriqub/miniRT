@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 15:45:05 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/15 17:27:51 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:50:13 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,36 @@ static bool	cy_cap(t_ray ray, t_cylinder *cy, double *out, int top)
 	return (false);
 }
 
-// a = 
-static bool	cy_lateral(t_ray ray, t_cylinder *cy, double *out)
+static bool	cy_lateral_2(t_ray ray, t_cylinder *cy,
+		double *out, t_cylinder_hit hit)
+{
+	hit.t1 = (-hit.b - sqrt(hit.discriminant)) / (2 * hit.a);
+	hit.t2 = (-hit.b + sqrt(hit.discriminant)) / (2 * hit.a);
+	if (hit.t1 > EPSILON)
+	{
+		hit.p = vec3_add(ray.origin, vec3_scale(ray.direction, hit.t1));
+		hit.h = vec3_dot(vec3_sub(hit.p, cy->center), cy->normal);
+		if (hit.h >= 0.0 && hit.h <= cy->height)
+		{
+			*out = hit.t1;
+			return (true);
+		}
+	}
+	if (hit.t2 > EPSILON)
+	{
+		hit.p = vec3_add(ray.origin, vec3_scale(ray.direction, hit.t2));
+		hit.h = vec3_dot(vec3_sub(hit.p, cy->center), cy->normal);
+		if (hit.h >= 0.0 && hit.h <= cy->height)
+		{
+			*out = hit.t2;
+			return (true);
+		}
+	}
+	return (false);
+}
+
+/*
+typedef struct s_cylinder_hit
 {
 	t_vec3	oc;
 	t_vec3	d;
@@ -91,38 +119,20 @@ static bool	cy_lateral(t_ray ray, t_cylinder *cy, double *out)
 	double	t2;
 	t_vec3	p;
 	double	h;
+}	t_cylinder_hit;*/
+static bool	cy_lateral(t_ray ray, t_cylinder *cy, double *out)
+{
+	t_cylinder_hit	hit;
 
-	oc = vec3_sub(ray.origin, cy->center);
-	d = vec3_sub(ray.direction,
+	hit.oc = vec3_sub(ray.origin, cy->center);
+	hit.d = vec3_sub(ray.direction,
 			vec3_scale(cy->normal, vec3_dot(ray.direction, cy->normal)));
-	w = vec3_sub(oc, vec3_scale(cy->normal, vec3_dot(oc, cy->normal)));
-	a = vec3_dot(d, d);
-	b = 2 * vec3_dot(d, w);
-	c = vec3_dot(w, w) - (cy->diameter * cy->diameter) / 4.0;
-	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0.0 || fabs(a) < EPSILON)
+	hit.w = vec3_sub(hit.oc, vec3_scale(cy->normal, vec3_dot(hit.oc, cy->normal)));
+	hit.a = vec3_dot(hit.d, hit.d);
+	hit.b = 2 * vec3_dot(hit.d, hit.w);
+	hit.c = vec3_dot(hit.w, hit.w) - (cy->diameter * cy->diameter) / 4.0;
+	hit.discriminant = hit.b * hit.b - 4 * hit.a * hit.c;
+	if (hit.discriminant < 0.0 || fabs(hit.a) < EPSILON)
 		return (false);
-	t1 = (-b - sqrt(discriminant)) / (2 * a);
-	t2 = (-b + sqrt(discriminant)) / (2 * a);
-	if (t1 > EPSILON)
-	{
-		p = vec3_add(ray.origin, vec3_scale(ray.direction, t1));
-		h = vec3_dot(vec3_sub(p, cy->center), cy->normal);
-		if (h >= 0.0 && h <= cy->height)
-		{
-			*out = t1;
-			return (true);
-		}
-	}
-	if (t2 > EPSILON)
-	{
-		p = vec3_add(ray.origin, vec3_scale(ray.direction, t2));
-		h = vec3_dot(vec3_sub(p, cy->center), cy->normal);
-		if (h >= 0.0 && h <= cy->height)
-		{
-			*out = t2;
-			return (true);
-		}
-	}
-	return (false);
+	return (cy_lateral_2(ray, cy, out, hit));
 }
