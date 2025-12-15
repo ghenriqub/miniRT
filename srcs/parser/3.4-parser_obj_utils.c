@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 16:55:35 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/02 15:35:46 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:21:34 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	*ft_parser_plane(char *line)
 	pl = ft_calloc(1, sizeof(t_plane));
 	pl->point = ft_get_vec3(args[1]);
 	pl->normal = ft_get_vec3(args[2]);
+	pl->normal = vec3_normalize(pl->normal);
 	pl->color = ft_get_rgb(args[3]);
 	ft_free_split(args);
 	return (pl);
@@ -84,6 +85,7 @@ void	*ft_parser_cylinder(char *line)
 	cy = ft_calloc(1, sizeof(t_cylinder));
 	cy->center = ft_get_vec3(args[1]);
 	cy->normal = ft_get_vec3(args[2]);
+	cy->normal = vec3_normalize(cy->normal);
 	cy->diameter = ft_atod(args[3]);
 	cy->height = ft_atod(args[4]);
 	cy->color = ft_get_rgb(args[5]);

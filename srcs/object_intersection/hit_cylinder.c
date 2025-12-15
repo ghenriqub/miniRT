@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hit_cylinder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 15:45:05 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 14:57:39 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:27:51 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
