@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 15:45:05 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/15 17:50:13 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:52:52 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ static bool	cy_lateral(t_ray ray, t_cylinder *cy, double *out)
 	hit.oc = vec3_sub(ray.origin, cy->center);
 	hit.d = vec3_sub(ray.direction,
 			vec3_scale(cy->normal, vec3_dot(ray.direction, cy->normal)));
-	hit.w = vec3_sub(hit.oc, vec3_scale(cy->normal, vec3_dot(hit.oc, cy->normal)));
+	hit.w = vec3_sub(hit.oc, vec3_scale(cy->normal,
+				vec3_dot(hit.oc, cy->normal)));
 	hit.a = vec3_dot(hit.d, hit.d);
 	hit.b = 2 * vec3_dot(hit.d, hit.w);
 	hit.c = vec3_dot(hit.w, hit.w) - (cy->diameter * cy->diameter) / 4.0;
