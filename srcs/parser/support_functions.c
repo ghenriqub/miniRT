@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   support_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:46:12 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 21:16:37 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/15 16:37:45 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,12 @@ void	ft_free_args(t_args *args)
 	if (args->objects)
 		ft_free_split(args->objects);
 	free(args);
+}
+
+void	init_counts(t_args *args, int *count)
+{
+	args->ambient_light = NULL;
+	args->camera = NULL;
+	args->light_count = count[0];
+	args->obj_count = count[1];
 }

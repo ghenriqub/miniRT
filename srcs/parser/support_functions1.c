@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   support_functions1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 16:13:14 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 13:35:42 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/15 16:42:57 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,11 @@ void	ft_free_objects_struc(t_object **arr, int count)
 		i++;
 	}
 	free(arr);
+}
+
+char	*free_and_getline(char *line, char *trimmed, int fd)
+{
+	free(trimmed);
+	free(line);
+	return (line = get_next_line(fd));
 }

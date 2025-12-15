@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   2-allocate.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 14:48:28 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:00:11 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,30 @@ static int	ft_is_object(char *line)
 	return (0);
 }
 
+static void	ft_count_line(char *line, int *count)
+{
+	char	*trimmed;
+	int		i;
+
+	trimmed = ft_strtrim(line, " \t\r\b\n");
+	if (!trimmed)
+		return ;
+	ft_tab_to_space(trimmed);
+	i = 0;
+	while (trimmed[i] == ' ')
+		i++;
+	if (!ft_strncmp(&trimmed[i], "L ", 2))
+		count[0]++;
+	else if (ft_is_object(trimmed))
+		count[1]++;
+	free(trimmed);
+}
+
 static int	*ft_count(char *file)
 {
 	int		*count;
 	int		fd;
 	char	*line;
-	char	*trimmed;
-	int		i;
 
 	count = ft_calloc(2, sizeof(int));
 	if (!count)
@@ -45,35 +62,12 @@ static int	*ft_count(char *file)
 	line = get_next_line(fd);
 	while (line)
 	{
-		trimmed = ft_strtrim(line, " \t\r\b\n");
+		ft_count_line(line, count);
 		free(line);
-		if (!trimmed)
-			break ;
-		ft_tab_to_space(trimmed);
-		i = 0;
-		while (trimmed[i] == ' ')
-			i++;
-		if (!ft_strncmp(&trimmed[i], "L ", 2))
-			count[0]++;
-		else if (ft_is_object(trimmed))
-			count[1]++;
-		free(trimmed);
 		line = get_next_line(fd);
 	}
 	close(fd);
 	return (count);
-}
-
-static char	*ft_is_double(t_args *args, char *target, char *line, int fd)
-{
-	if (target)
-	{
-		free(line);
-		ft_free_args(args);
-		close(fd);
-		ft_exit(ERROR_SCENE, 2);
-	}
-	return (ft_strdup(line));
 }
 
 // 1 - set args NULL
@@ -88,7 +82,6 @@ void	ft_put_argument(t_args *args, int fd)
 	char	*line;
 	char	*trimmed;
 
-	args->ambient_light = NULL;
 	i = 0;
 	k = 0;
 	line = get_next_line(fd);
@@ -107,9 +100,7 @@ void	ft_put_argument(t_args *args, int fd)
 			args->objects[i++] = ft_strdup(trimmed);
 		else if (trimmed[0] != '\n' && trimmed[0] != '#' && trimmed[0] != '\0')
 			ft_is_double(args, "invalid", trimmed, fd);
-		free(trimmed);
-		free(line);
-		line = get_next_line(fd);
+		line = free_and_getline(line, trimmed, fd);
 	}
 }
 
@@ -126,9 +117,7 @@ t_args	*ft_allocate_args(char *file)
 	args = ft_calloc(sizeof(t_args), 1);
 	if (!args)
 		ft_exit(ERROR_MALLOC, 2);
-	args->camera = NULL;
-	args->light_count = count[0];
-	args->obj_count = count[1];
+	init_counts(args, count);
 	free(count);
 	args->objects = ft_calloc(sizeof(char *), (args->obj_count + 1));
 	if (!args->objects)

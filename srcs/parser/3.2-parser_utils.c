@@ -6,7 +6,7 @@
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:13:09 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/10 11:59:59 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:00:18 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,16 @@ void	**ft_alloc_arraystruc(int count, size_t type_size)
 	}
 	arr[count] = NULL;
 	return (arr);
+}
+
+char	*ft_is_double(t_args *args, char *target, char *line, int fd)
+{
+	if (target)
+	{
+		free(line);
+		ft_free_args(args);
+		close(fd);
+		ft_exit(ERROR_SCENE, 2);
+	}
+	return (ft_strdup(line));
 }

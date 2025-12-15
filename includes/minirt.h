@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 14:23:27 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:00:27 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,9 +220,12 @@ int				ft_is_rt(char *file);
 t_scene			*ft_get_scene(char *file);
 int				ft_get_fd(char *file);
 void			ft_put_argument(t_args *args, int fd);
+void			init_counts(t_args *args, int *count);
 void			ft_free_args(t_args *args);
 t_scene			*ft_parser(t_args *args);
 t_args			*ft_allocate_args(char *file);
+char			*ft_is_double(t_args *args, char *target, char *line, int fd);
+char			*free_and_getline(char *line, char *trimmed, int fd);
 t_ambient_light	*ft_parser_al(char *input);
 t_camera		*ft_parser_c(char *input);
 t_light			**ft_parser_l(char **input, int count_light);
