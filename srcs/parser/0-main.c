@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   0-main.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:44:29 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/14 14:38:32 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/17 11:57:31 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ int	main(int argc, char **argv)
 	if (!scene)
 		ft_exit("Error: Failed to parse scene", 1);
 	ft_init_graphics(scene);
+	mlx_string_put(scene->disp.mlx, scene->disp.win,
+		WIDTH / 2 - 60, HEIGHT / 2,
+		0xFFFFFF, "Loading...");
+	mlx_do_sync(scene->disp.mlx);
 	render_scene(scene);
 	mlx_hook(scene->disp.win, 2, 1l << 0, key_press, scene);
 	mlx_hook(scene->disp.win, 17, 1L << 17, close_window, scene);
