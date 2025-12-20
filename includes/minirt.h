@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/15 17:53:27 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/20 14:16:15 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@
 # define DESTROYNOTIFY   17
 # define EXPOSE          12
 
-# define KEYPRESSMASK    (1L<<0)
-# define KEYRELEASEMASK  (1L<<1)
-# define BUTTONPRESSMASK (1L<<2)
-# define STRUCNOTIFYMASK (1L<<17) 
+enum e_event_mask
+{
+	KEYPRESSMASK = 1L << 0,
+	KEYRELEASEMASK = 1L << 1,
+	BUTTONPRESSMASK = 1L << 2,
+	STRUCNOTIFYMASK = 1L << 17
+};
 
 typedef struct s_vec3
 {
@@ -305,7 +308,7 @@ bool			hit_objects(t_scene *scene, t_ray ray, t_hit *hit);
 t_rgb			apply_ambient(t_scene *sc, t_rgb obj_color);
 bool			is_in_shadow(t_scene *sc, t_vec3 point, t_light *light);
 t_rgb			apply_diffuse(t_vec3 normal, t_vec3 light_dir,
-							t_light *light, t_rgb obj_color);
+					t_light *light, t_rgb obj_color);
 t_rgb			rgb_add(t_rgb a, t_rgb b);
 t_rgb			rgb_clamp(t_rgb c);
 int				rgb_to_int(t_rgb color);
@@ -316,7 +319,7 @@ t_vec3			get_normal(t_hit *hit, t_vec3 point);
 
 // ==== render ====
 void			put_pixel(t_scene *scene, int x, int y, int color);
-void  			render_scene(t_scene *scene);
+void			render_scene(t_scene *scene);
 
 // ==== graphics ====
 int				key_press(int keycode, t_scene *scene);
