@@ -1,0 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shade_hit.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/13 14:57:47 by lgertrud          #+#    #+#             */
+/*   Updated: 2025/12/13 15:12:05 by lgertrud         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt_bonus.h"
+
+t_rgb	shade_hit(t_scene *sc, t_hit *hit, t_vec3 point, t_vec3 normal)
+{
+	t_rgb	color;
+	t_rgb	tmp;
+	int		i;
+	t_rgb	obj_color;
+
+	if (hit->type == SPHERE)
+		obj_color = ((t_sphere *)hit->object)->color;
+	else if (hit->type == PLANE)
+		obj_color = ((t_plane *)hit->object)->color;
+	else
+		obj_color = ((t_cylinder *)hit->object)->color;
+	color = apply_ambient(sc, obj_color);
+	i = 0;
+	while (i < sc->light_count)
+	{
+		if (!is_in_shadow(sc, point, sc->lights[i]))
+		{
+			tmp = apply_diffuse(normal,
+					vec3_normalize(vec3_sub(sc->lights[i]->position, point)),
+					sc->lights[i], obj_color);
+			color = rgb_add(color, tmp);
+		}
+		i++;
+	}
+	return (rgb_clamp(color));
+}
