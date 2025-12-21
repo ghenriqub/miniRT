@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/20 14:16:15 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:28:26 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,27 +227,12 @@ typedef struct s_cylinder_hit
 	double	h;
 }	t_cylinder_hit;
 
-// typedef struct s_world
-// {
-// 	t_camera	camera;
-// 	t_light		ambient;
-// 	t_vec3		*lights;
-// 	t_vec3		*shapes;
-// 	int			counters[3];
-// 	t_graphics	disp;
-// 	t_vec3		up;
-// 	t_vec3		right;
-// 	char		**map;
-// 	double		hview;
-// 	double		wview;
-// }	t_world;
-
 // ============ Parser ============
 
 void			ft_exit(char *message, int code);
 int				ft_is_rt(char *file);
 t_scene			*ft_get_scene(char *file);
-int				ft_get_fd(char *file);
+int				ft_get_fd(char *file, int *count);
 void			ft_put_argument(t_args *args, int fd);
 void			init_counts(t_args *args, int *count);
 void			ft_free_args(t_args *args);
