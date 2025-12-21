@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+         #
+#    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/13 20:39:24 by ghenriqu          #+#    #+#              #
-#    Updated: 2025/12/21 15:57:39 by ghenriqu         ###   ########.fr        #
+#    Updated: 2025/12/21 16:03:18 by lgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -161,7 +161,7 @@ clean:
 fclean: clean
 	@rm -f $(NAME) $(NAME_BONUS)
 	@$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
-	@$(MAKE) -C $(MLX_DIR) clean --no-print-directory 2>/dev/null || true
+	@$(MAKE) -C @$(MLX_DIR) clean --no-print-directory 2>/dev/null || true
 	@echo "$(RED)Cleaned executables$(RESET)"
 
 re: fclean all
