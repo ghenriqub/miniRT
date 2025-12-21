@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   support_functions.c                                :+:      :+:    :+:   */
+/*   support_functions_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:46:12 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/15 16:37:45 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:57:17 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,16 @@ int	ft_is_rt(char *file)
 	return (0);
 }
 
-int	ft_get_fd(char *file)
+int	ft_get_fd(char *file, int *count)
 {
 	int	fd;
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
+	{
+		free(count);
 		ft_exit(ERROR_FILE, 2);
+	}
 	return (fd);
 }
 

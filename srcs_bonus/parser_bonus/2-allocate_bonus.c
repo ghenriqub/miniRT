@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   2-allocate.c                                       :+:      :+:    :+:   */
+/*   2-allocate_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 12:08:27 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/15 17:00:11 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:54:32 by lgertrud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	*ft_count(char *file)
 	count = ft_calloc(2, sizeof(int));
 	if (!count)
 		ft_exit(ERROR_MALLOC, 2);
-	fd = ft_get_fd(file);
+	fd = ft_get_fd(file, count);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -130,7 +130,7 @@ t_args	*ft_allocate_args(char *file)
 			ft_exit(ERROR_MALLOC, 2);
 		args->objects[args->light_count] = NULL;
 	}
-	fd = ft_get_fd(file);
+	fd = ft_get_fd(file, NULL);
 	ft_put_argument(args, fd);
 	close(fd);
 	return (args);

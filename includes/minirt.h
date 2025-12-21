@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 16:42:30 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/15 17:53:27 by lgertrud         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:28:26 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@
 # define DESTROYNOTIFY   17
 # define EXPOSE          12
 
-# define KEYPRESSMASK    (1L<<0)
-# define KEYRELEASEMASK  (1L<<1)
-# define BUTTONPRESSMASK (1L<<2)
-# define STRUCNOTIFYMASK (1L<<17) 
+enum e_event_mask
+{
+	KEYPRESSMASK = 1L << 0,
+	KEYRELEASEMASK = 1L << 1,
+	BUTTONPRESSMASK = 1L << 2,
+	STRUCNOTIFYMASK = 1L << 17
+};
 
 typedef struct s_vec3
 {
@@ -224,27 +227,12 @@ typedef struct s_cylinder_hit
 	double	h;
 }	t_cylinder_hit;
 
-// typedef struct s_world
-// {
-// 	t_camera	camera;
-// 	t_light		ambient;
-// 	t_vec3		*lights;
-// 	t_vec3		*shapes;
-// 	int			counters[3];
-// 	t_graphics	disp;
-// 	t_vec3		up;
-// 	t_vec3		right;
-// 	char		**map;
-// 	double		hview;
-// 	double		wview;
-// }	t_world;
-
 // ============ Parser ============
 
 void			ft_exit(char *message, int code);
 int				ft_is_rt(char *file);
 t_scene			*ft_get_scene(char *file);
-int				ft_get_fd(char *file);
+int				ft_get_fd(char *file, int *count);
 void			ft_put_argument(t_args *args, int fd);
 void			init_counts(t_args *args, int *count);
 void			ft_free_args(t_args *args);
@@ -305,7 +293,7 @@ bool			hit_objects(t_scene *scene, t_ray ray, t_hit *hit);
 t_rgb			apply_ambient(t_scene *sc, t_rgb obj_color);
 bool			is_in_shadow(t_scene *sc, t_vec3 point, t_light *light);
 t_rgb			apply_diffuse(t_vec3 normal, t_vec3 light_dir,
-							t_light *light, t_rgb obj_color);
+					t_light *light, t_rgb obj_color);
 t_rgb			rgb_add(t_rgb a, t_rgb b);
 t_rgb			rgb_clamp(t_rgb c);
 int				rgb_to_int(t_rgb color);
@@ -316,7 +304,7 @@ t_vec3			get_normal(t_hit *hit, t_vec3 point);
 
 // ==== render ====
 void			put_pixel(t_scene *scene, int x, int y, int color);
-void  			render_scene(t_scene *scene);
+void			render_scene(t_scene *scene);
 
 // ==== graphics ====
 int				key_press(int keycode, t_scene *scene);

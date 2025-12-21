@@ -6,7 +6,7 @@
 /*   By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:20:22 by lgertrud          #+#    #+#             */
-/*   Updated: 2025/12/13 21:25:21 by ghenriqu         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:26:05 by ghenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	ft_parser_rgb(char *str)
 	int		i;
 	int		value;
 
+	if (!str || str[ft_strlen(str) - 1] == ',')
+		return (0);
 	s = ft_split(str, ',');
 	if (!s || count_parts(str, ',') != 3)
 		return (ft_free_split(s), 0);
@@ -73,7 +75,7 @@ int	ft_parser_vec3(char *str)
 {
 	char	**p;
 
-	if (!str)
+	if (!str || str[ft_strlen(str) - 1] == ',')
 		return (0);
 	p = ft_split(str, ',');
 	if (!p || count_parts(str, ',') != 3 || !p[0] || !p[1] || !p[2])
