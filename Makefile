@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lgertrud <lgertrud@student.42porto.com>    +#+  +:+       +#+         #
+#    By: ghenriqu <ghenriqu@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/13 20:39:24 by ghenriqu          #+#    #+#              #
-#    Updated: 2025/12/17 14:17:44 by lgertrud         ###   ########.fr        #
+#    Updated: 2025/12/21 15:57:39 by ghenriqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,7 +111,7 @@ SRC_BONUS	=	$(SRC_DIR_B)/parser_bonus/0-main_bonus.c \
 					$(SRC_DIR_B)/graphics_bonus/minilibx_setup_bonus.c
 
 OBJS        = $(SRC:.c=.o)
-OBJS_BONUS        = $(SRC_BONUS:.c=.o)
+OBJS_BONUS  = $(SRC_BONUS:.c=.o)
 
 # Colors
 GREEN       = \033[32m
@@ -119,7 +119,6 @@ YELLOW      = \033[33m
 RED         = \033[31m
 RESET       = \033[0m
 
-# Rules
 # Rules
 .PHONY: all bonus clean fclean re
 
